@@ -12,6 +12,8 @@ exports.up = function(knex, Promise) {
     t.string('position');
     t.string('image');
     t.string('image_id');
+    t.string('strength');
+    t.string('weakness');
   })
 };
 
