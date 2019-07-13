@@ -10,7 +10,7 @@ exports.up = function(knex, Promise) {
     t.boolean('developer').notNullable().defaultTo(false);
     t.string('profile_url');
     t.string('password_reset_token');
-    t.timestamp('password_reset_token_expiry');
+    t.timestamp('password_reset_token_expiry').nullable().defaultTo(null);
   })
 };
 
