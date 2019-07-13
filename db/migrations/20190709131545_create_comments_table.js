@@ -5,7 +5,7 @@ exports.up = function(knex, Promise) {
     t.integer('student_id').unsigned().references('id').inTable('students').onDelete('CASCADE');
     t.integer('user_id').unsigned().references('id').inTable('users').onDelete('CASCADE');
     t.string('content').notNullable();
-    t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
+    t.datetime('created_at').notNullable().defaultTo(knex.fn.now());
   })
 };
 
