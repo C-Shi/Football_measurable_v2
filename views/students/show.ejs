@@ -2,6 +2,7 @@
 
 <div class="container-fluid">
   <div class="row">
+  
     <div class="col-md-3">
       <div class="card">
         <img class="card-img-top" src="<%= profile.image %>" alt="Card image cap">
@@ -18,6 +19,94 @@
         </div>
       </div>
     </div>
+
+    <div class="col-md-5">
+      <div class="card">
+        <div class="card-header">Strength</div>
+        <div class="card-body">
+          <p class="card-text"><%= profile.strength %></p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">Weakness</div>
+        <div class="card-body">
+          <p class="card-text"><%= profile.strength %></p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          Coach comments 
+          <a href="#" id="addCommentButton" style="float:right"><i class="fas fa-plus"></i>Add Comment</a>
+        </div>
+        <div class="card-body">
+          <% comments.forEach(function(comment){ %>
+              <div style="margin-bottom: 5px"><%= comment.content %>
+                <form action="/student/<%= profile.id%>/comment/<%= comment.id%>?_method=DELETE" method="POST" style="display:inline; float:right"><button class="badge badge-dark">Delete</button></form>
+              </div>
+          <% }) %>
+
+          <form action="/student/<%= profile.id %>/comment" method='POST' id="commentSection" style="display:none">
+            <script>
+             $('#addCommentButton').click(function(){
+              $('#commentSection').slideToggle()
+             })
+            </script>
+            <textarea placeholder="Add a comment to this student" rows="4" class="form-control" id="commentText" name="comment[text]"></textarea>
+            <p></p>
+            <button class="btn btn-sm btn-success">Add</button>
+            <button type="button" id="clearComment" class="btn btn-sm btn-secondary">Clear</a>
+            <script>
+              var clear = document.getElementById('clearComment');
+              var comment = document.getElementById('commentText');
+              clear.addEventListener("click", function(){
+                comment.value = "";
+              })
+            </script>
+          </form>
+        </div>
+      
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <table class="table">
+        <tbody>
+          <tr>
+            <td class="performance-label">1st Bench Press</td>
+            <td class="performance-value"><%= performance.bench_press_first %></td>
+          </tr>
+          <tr>
+            <td class="performance-label">2nd Bench Press</td>
+            <td class="performance-value"><%= performance.bench_press_second %></td>
+          </tr>
+          <tr>
+            <td class="performance-label">Broad</td>
+            <td class="performance-value"><%= performance.broad %></td>
+          </tr>
+          <tr>
+            <td class="performance-label">Vertical</td>
+            <td class="performance-value"><%= performance.vertical %></td>
+          </tr>
+          <tr>
+            <td class="performance-label">40:1st</td>
+            <td class="performance-value"><%= performance.forty_first %></td>
+          </tr>
+          <tr>
+            <td class="performance-label">40:2nd</td>
+            <td class="performance-value"><%= performance.forty_second %></td>
+          </tr>
+          <tr>
+            <td class="performance-label">Shuttle:1st L</td>
+            <td class="performance-value"><%= performance.shuttle_first_L %></td>
+          </tr>
+          <tr>
+            <td class="performance-label">Shuttle:2nd R</td>
+            <td class="performance-value"><%= performance.shuttle_second_R %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
   </div>
 </div>
 
