@@ -30,7 +30,7 @@
       <div class="card">
         <div class="card-header">Weakness</div>
         <div class="card-body">
-          <p class="card-text"><%= profile.strength %></p>
+          <p class="card-text"><%= profile.weakness %></p>
         </div>
       </div>
       <div class="card">
@@ -73,38 +73,50 @@
         <tbody>
           <tr>
             <td class="performance-label">1st Bench Press</td>
-            <td class="performance-value"><%= performance.bench_press_first %></td>
+            <td class="performance-value"><%= performance.bench_press_first || 'N/A' %></td>
           </tr>
           <tr>
             <td class="performance-label">2nd Bench Press</td>
-            <td class="performance-value"><%= performance.bench_press_second %></td>
+            <td class="performance-value"><%= performance.bench_press_second || 'N/A' %></td>
           </tr>
           <tr>
             <td class="performance-label">Broad</td>
-            <td class="performance-value"><%= performance.broad %></td>
+            <td class="performance-value"><%= performance.broad || 'N/A' %></td>
           </tr>
           <tr>
             <td class="performance-label">Vertical</td>
-            <td class="performance-value"><%= performance.vertical %></td>
+            <td class="performance-value"><%= performance.vertical || 'N/A' %></td>
           </tr>
           <tr>
             <td class="performance-label">40:1st</td>
-            <td class="performance-value"><%= performance.forty_first %></td>
+            <td class="performance-value"><%= performance.forty_first || 'N/A' %></td>
           </tr>
           <tr>
             <td class="performance-label">40:2nd</td>
-            <td class="performance-value"><%= performance.forty_second %></td>
+            <td class="performance-value"><%= performance.forty_second || 'N/A' %></td>
           </tr>
           <tr>
             <td class="performance-label">Shuttle:1st L</td>
-            <td class="performance-value"><%= performance.shuttle_first_L %></td>
+            <td class="performance-value"><%= performance.shuttle_first_L || 'N/A' %></td>
           </tr>
           <tr>
             <td class="performance-label">Shuttle:2nd R</td>
-            <td class="performance-value"><%= performance.shuttle_second_R %></td>
+            <td class="performance-value"><%= performance.shuttle_second_R || 'N/A' %></td>
           </tr>
         </tbody>
       </table>
+
+      <!-- Year Option Dropdown-->
+      <div class="dropdown">
+        <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Year Option
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="#">2019</a>
+          <a class="dropdown-item" href="#">2018</a>
+          <a class="dropdown-item" href="#">2017</a>
+        </div>
+      </div>
     </div>
 
   </div>
