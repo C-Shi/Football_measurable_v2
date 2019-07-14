@@ -3,7 +3,7 @@
 <div class="container student-edit">
   <div class="row">
     <div class="col-md-8 offset-md-2">
-      <form>
+      <form action="/students/<%= profile.id %>/update?_method=PUT" method="POST">
        <!-- basic info -->
         <div class="form-row">
           <div class="col-md-6 mb-3">

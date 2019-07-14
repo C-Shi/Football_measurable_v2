@@ -54,7 +54,8 @@ router.post('/students', (req, res) => {
 })
 
 router.put('/students/:id/update', (req, res) => {
-
+  // console.log(req.body);
+  res.json(req.body);
 })
 
 router.delete('/students/:id', (req, res) => {
