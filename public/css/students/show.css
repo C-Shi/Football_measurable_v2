@@ -1,0 +1,35 @@
+.student {
+  padding: 0;
+  height: 100%;
+}
+
+.student .row {
+  height: 100%;
+}
+
+.student .row table th {
+  background: #f5f5f5;
+  border-bottom: 0;
+}
+
+.student .row table tbody td:nth-child(1) {
+  background: #f5f5f5;
+}
+
+.student .remark, .student .performance {
+  margin-top: 15px;
+}
+
+.student .student-profile {
+  padding-right: 0;
+  border-right: 1px solid #ccc;
+}
+
+.student .student-profile .card {
+  border: 0px;
+  border-radius: 0;
+}
+
+.student .student-profile .card img {
+  border-radius: 0;
+}

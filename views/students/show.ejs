@@ -1,9 +1,9 @@
 <% include ../partials/header %>
 
-<div class="container-fluid">
+<div class="container-fluid student">
   <div class="row">
   
-    <div class="col-md-3">
+    <div class="col-md-3 student-profile">
       <div class="card">
         <img class="card-img-top" src="<%= profile.image %>" alt="Card image cap">
         <div class="card-body">
@@ -20,7 +20,7 @@
       </div>
     </div>
 
-    <div class="col-md-5">
+    <div class="col-md-5 remark">
       <div class="card">
         <div class="card-header">Strength</div>
         <div class="card-body">
@@ -68,8 +68,16 @@
       </div>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-4 performance">
       <table class="table">
+        <col width="40%">
+        <col width="60%">
+        <thead>
+          <tr>
+            <th>Test</th>
+            <th>Performance</th>
+          </tr>
+        </thead>
         <tbody>
           <tr>
             <td class="performance-label">1st Bench Press</td>
