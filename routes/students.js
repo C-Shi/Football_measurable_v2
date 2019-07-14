@@ -54,8 +54,15 @@ router.post('/students', (req, res) => {
 })
 
 router.put('/students/:id/update', (req, res) => {
-  // console.log(req.body);
-  res.json(req.body);
+  const studentId = req.params.id;
+  const profile = req.body;
+  studentHelper.updateStudentById(studentId, profile)
+  .then(() => {
+    res.redirect(`/students/${studentId}`);
+  })
+  .catch(error => {
+    res.send(error.message);
+  })
 })
 
 router.delete('/students/:id', (req, res) => {
