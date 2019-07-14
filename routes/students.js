@@ -22,7 +22,21 @@ router.get('/students/datatable', (req, res) => {
 })
 
 router.get('/students/:id', (req, res) => {
-
+  const studentId = req.params.id
+  Promise.all([
+    studentHelper.fetchStudentById(studentId),
+    studentHelper.fetchStudentPerformance(studentId),
+    studentHelper.fetchStudentComments(studentId)
+  ])
+  .then(results => {
+    const profile = results[0];
+    const performance = results[1];
+    const comments = results[2];
+    res.json({profile, performance, comments})
+  })
+  .catch(error => {
+    res.send(error.message)
+  })
 })
 
 router.get('/students/:id/edit', (req, res) => {
