@@ -2,7 +2,7 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-lg-8">
+    <div class="col-12">
       <table id="studentTable" class="table table-hover">
         <thead>
           <tr>
@@ -18,20 +18,6 @@
   </div>
 </div>
 
-<script>
-  $(document).ready(function(){
-    $('#studentTable').DataTable({
-        ajax: '/students/datatable',
-        columns: [
-          { data: "name" },
-          { data: "school" },
-          { data: "grade" },
-          { data: "position" },
-          { data: "more" }, 
-        ]
-    });
-  })
-
-</script>
+<script src="/javascript/students/index.js"></script>
 
 <% include ../partials/footer %>
