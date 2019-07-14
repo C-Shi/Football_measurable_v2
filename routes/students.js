@@ -3,13 +3,22 @@ const router  = express.Router({mergeParams:true})
 const studentHelper = require('../lib/studentHelper');
 
 router.get('/students', (req, res) => {
-
+  res.render('students/index');
 })
 
 router.get('/students/datatable', (req, res) => {
   studentHelper.fetchStudents()
-  .then(students => res.json(students))
-  .catch(error => res.send(error.message))
+  .then(students => {
+     const data = students.map(student => {
+      return {
+        ...student,
+        name: `${student.first_name} ${student.last_name}`,
+        more: `<a href="/students/${student.id}" class="btn btn-primary btn-sm">Detail</a><a href="/students/${student.id}/edit" class="btn btn-success btn-sm">Edit</a>`
+      }
+    })
+    res.send({data});
+  })
+  .catch(error => console.log(error))
 })
 
 router.get('/students/:id', (req, res) => {

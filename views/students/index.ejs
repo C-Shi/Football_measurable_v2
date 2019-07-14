@@ -1,0 +1,37 @@
+<% include ../partials/header %>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8">
+      <table id="studentTable" class="table table-hover">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>School</th>
+            <th>Grade</th>
+            <th>Position</th>
+            <th>More</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function(){
+    $('#studentTable').DataTable({
+        ajax: '/students/datatable',
+        columns: [
+          { data: "name" },
+          { data: "school" },
+          { data: "grade" },
+          { data: "position" },
+          { data: "more" }, 
+        ]
+    });
+  })
+
+</script>
+
+<% include ../partials/footer %>
