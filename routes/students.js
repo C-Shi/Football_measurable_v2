@@ -32,7 +32,9 @@ router.get('/students/:id', (req, res) => {
     const profile = results[0];
     const performance = results[1];
     const comments = results[2];
-    res.json({profile, performance, comments})
+
+    if(!profile) throw new Error('Invalid Student');
+    res.render("students/show", { profile, performance, comments})
   })
   .catch(error => {
     res.send(error.message)
