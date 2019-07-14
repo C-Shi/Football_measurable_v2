@@ -42,7 +42,11 @@ router.get('/students/:id', (req, res) => {
 })
 
 router.get('/students/:id/edit', (req, res) => {
-
+  const studentId = req.params.id;
+  studentHelper.fetchStudentById(studentId)
+  .then(profile => {
+    res.render('students/edit', { profile })
+  })
 })
 
 router.post('/students', (req, res) => {

@@ -1,0 +1,91 @@
+<% include ../partials/header %>
+
+<div class="container student-edit">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <form>
+       <!-- basic info -->
+        <div class="form-row">
+          <div class="col-md-6 mb-3">
+            <label>First name</label>
+            <input type="text" class="form-control" name="first_name" placeholder="First name" value="<%= profile.first_name %>" required>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label>Last name</label>
+            <input type="text" class="form-control" name="last_name" placeholder="Last name" value="<%= profile.last_name%>" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="col-md-4 mb-3">
+            <label>Grade</label>
+            <div class="input-group">
+              <input type="text" class="form-control" name="grade" placeholder="Grade" value="<%= profile.grade %>" required>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label>School</label>
+            <div class="input-group">
+              <input type="text" class="form-control" name="school" placeholder="Grade" value="<%= profile.school %>" required>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label>Primary Position</label>
+            <div class="input-group">
+              <input type="text" class="form-control" name="position" placeholder="Grade" value="<%= profile.position %>" required>
+            </div>
+          </div>
+        </div>
+
+        <!-- physical data -->
+        <div class="form-row">
+          <div class="col-md-4 mb-3">
+            <label>Arm Span</label>
+            <input type="text" class="form-control" name="arm_span" placeholder="Arm Span" value="<%= profile.arm_span %>">
+          </div>
+          <div class="col-md-4 mb-3">
+            <label>Height</label>
+            <input type="text" class="form-control" name="height" placeholder="Height" value="<%= profile.height %>" required>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label>Weight (lb)</label>
+            <input type="text" class="form-control" name="weight" placeholder="Weight" value="<%= profile.weight %>" required>
+          </div>
+        </div>
+
+        <!-- strength and weakness -->
+        <div class="form-group">
+          <label>Strength</label>
+          <textarea class="form-control" name="strength" placeholder="What is my strength?"><%= profile.strength %></textarea>
+        </div>
+        <div class="form-group">
+          <label>Weakness</label>
+          <textarea class="form-control" name="weakness" placeholder="What is my weakness?"><%= profile.weakness %></textarea>
+        </div>
+
+        <!-- image upload optional -->
+        <div class="form-group">
+          <div class="custom-file">
+            <input type="file" class="custom-file-input" id="customFile">
+            <label class="custom-file-label" for="customFile">Choose file</label>
+          </div>
+          <small>Only Upload If You Want To Change Student Profile Image</small>
+        </div>
+
+        <button class="btn btn-success btn-sm" type="submit">Update</button>
+        <a href="/students/<%= profile.id %>" class="btn btn-secondary btn-sm">Go Back</a>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<script>
+// Add the following code if you want the name of the file appear on select
+$(".custom-file-input").on("change", function() {
+  var fileName = $(this).val().split("\\").pop();
+  $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+});
+</script>
+
+<% include ../partials/footer %>
