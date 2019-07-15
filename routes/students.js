@@ -66,7 +66,16 @@ router.put('/students/:id/update', (req, res) => {
 })
 
 router.delete('/students/:id', (req, res) => {
-
+  const studentId = req.params.id;
+  studentHelper.deleteStudentById(studentId)
+  .then((row) => {
+    if(row === 1) {
+      res.redirect('/students')
+    } else if (row === 0) {
+      res.redirect('back');
+    }
+  })
+  .catch(error => res.send(error.message))
 })
 
 module.exports = router;

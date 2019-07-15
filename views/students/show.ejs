@@ -15,7 +15,7 @@
           <p class="card-text"><strong>Weight: </strong><%= profile.weight %> lb</p>
           <p class="card-text"><strong>Position: </strong><%= profile.position || 'N/A' %></p>
           <a href="/students/<%= profile.id %>/edit" class="btn btn-success btn-sm">Edit Profile</a>
-          <a href="/students/<%= profile.id %>/delete" class="btn btn-danger btn-sm">Delete</a>
+          <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete-student">Delete</button>
         </div>
       </div>
     </div>
@@ -127,6 +127,31 @@
       </div>
     </div>
 
+  </div>
+</div>
+
+
+<!-- modal for delete student -->
+<div class="modal fade" id="delete-student" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Delete Student</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="/students/<%= profile.id %>?_method=Delete" method="post">
+          <p class="text-justify"><strong class="text-warning">Warning: </strong>You are about to delete profile of <strong><%= `${profile.first_name} ${profile.last_name}`%></strong>. This action will permenantly erase student profile and all corresponding performance data. If you wish to do so, please type in exact student name.</p>
+          <div class="form-group">
+            <input type="text" class="form-control">
+          </div>
+          <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+        </form>
+      </div>
+    </div>
   </div>
 </div>
 
