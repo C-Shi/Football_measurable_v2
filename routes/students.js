@@ -21,6 +21,10 @@ router.get('/students/datatable', (req, res) => {
   .catch(error => console.log(error))
 })
 
+router.get('/students/new', (req, res) => {
+  res.render('students/new');
+})
+
 router.get('/students/:id', (req, res) => {
   const studentId = req.params.id
   Promise.all([
@@ -41,6 +45,10 @@ router.get('/students/:id', (req, res) => {
   })
 })
 
+router.post('/students', (req, res) => {
+
+})
+
 router.get('/students/:id/edit', (req, res) => {
   const studentId = req.params.id;
   studentHelper.fetchStudentById(studentId)
@@ -49,9 +57,6 @@ router.get('/students/:id/edit', (req, res) => {
   })
 })
 
-router.post('/students', (req, res) => {
-
-})
 
 router.put('/students/:id/update', (req, res) => {
   const studentId = req.params.id;

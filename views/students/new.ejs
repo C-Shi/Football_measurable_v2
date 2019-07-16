@@ -1,0 +1,147 @@
+<% include ../partials/header %>
+
+<div class="container">
+  <div class="row">
+    
+    <form class="col-12">
+      <div class="row">
+        <!-- Area for creating student profile -->
+        <div class="col-md-8 form-profile">
+          <div class="form-row">
+            <div class="col-md-6 mb-3">
+              <label>First name</label>
+              <input type="text" class="form-control" name="first_name" placeholder="First name" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label>Last name</label>
+              <input type="text" class="form-control" name="last_name" placeholder="Last name" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="col-md-4 mb-3">
+              <label>Grade</label>
+              <div class="input-group">
+                <input type="text" class="form-control" name="grade" placeholder="Grade" required>
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label>School</label>
+              <div class="input-group">
+                <input type="text" class="form-control" name="school" placeholder="Grade" required>
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label>Primary Position</label>
+              <div class="input-group">
+                <input type="text" class="form-control" name="position" placeholder="Grade" required>
+              </div>
+            </div>
+          </div>
+
+          <!-- physical data -->
+          <div class="form-row">
+            <div class="col-md-4 mb-3">
+              <label>Arm Span</label>
+              <input type="text" class="form-control" name="arm_span" placeholder="Arm Span">
+            </div>
+            <div class="col-md-4 mb-3">
+              <label>Height</label>
+              <input type="text" class="form-control" name="height" placeholder="Height" required>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label>Weight (lb)</label>
+              <input type="text" class="form-control" name="weight" placeholder="Weight" required>
+            </div>
+          </div>
+
+          <!-- strength and weakness -->
+          <div class="form-group">
+            <label>Strength</label>
+            <textarea class="form-control" name="strength" placeholder="What is my strength?"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Weakness</label>
+            <textarea class="form-control" name="weakness" placeholder="What is my weakness?"></textarea>
+          </div>
+
+          <!-- image upload optional -->
+          <div class="form-group">
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" id="customFile">
+              <label class="custom-file-label" for="customFile">Choose file</label>
+            </div>
+            <small>Will apply default avatar if no image uploaded</small>
+          </div>
+
+          <button type="submit" class="btn btn-sm btn-success">Create</button>
+          <a href="/students" class="btn btn-secondary btn-sm">Go Back</a>
+        </div>
+
+        <!-- Area for input first student performance-->
+
+        <div class="col-md-4 form-performance">
+          <div class="form-row">
+            <div class="col-sm-6 mb-3 form-group">
+              <label>Bench Press 1st</label>
+              <input type="text" class="form-control" placeholder="Bench Press 1st Trail">
+            </div>
+            <div class="col-sm-6 mb-3 form-group">
+              <label>Bench Press 2st</label>
+              <input type="text" class="form-control" placeholder="Bench Press 2nd Trail">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Broad</label>
+            <input type="text" class="form-control" placeholder="Broad Jump">
+          </div>
+          <div class="form-group">
+            <label>Vertical</label>
+            <input type="text" class="form-control" placeholder="Vertical Jump">
+          </div>
+          <div class="form-row">
+            <div class="col-md-6 mb-3 form-group">
+              <label>40: 1st</label>
+              <input type="text" class="form-control" placeholder="40 first trail">
+            </div>
+            <div class="col-md-6 mb-3 form-group">
+              <label>40: 2nd</label>
+              <input type="text" class="form-control" placeholder="40 second trial">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-md-6 mb-3 form-group">
+              <label>Shuttle:1st L</label>
+              <input type="text" class="form-control" placeholder="Shuttle:2nd R">
+            </div>
+            <div class="col-md-6 mb-3 form-group">
+              <label>Shuttle:2nd R L</label>
+              <input type="text" class="form-control" placeholder="Shuttle:2nd R">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Data Year: </label>
+            <select class="custom-select" id="data-year" name="year">
+            </select>
+          </div>
+
+        </div>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+<script>
+  $(document).ready(function(){
+    (function() {
+      var curYear = Number(new Date().toISOString().slice(0, 4));
+      for(i = curYear; i > curYear - 5; i--) {
+        var option = "<option value='" + i + "'>" + i +"</option>";
+        $('#data-year').append(option);
+      }
+    })();
+  })
+</script>
+
+<% include ../partials/footer %>
