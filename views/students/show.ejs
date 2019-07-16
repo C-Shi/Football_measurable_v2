@@ -143,16 +143,20 @@
       </div>
       <div class="modal-body">
         <form action="/students/<%= profile.id %>?_method=Delete" method="post">
-          <p class="text-justify"><strong class="text-warning">Warning: </strong>You are about to delete profile of <strong><%= `${profile.first_name} ${profile.last_name}`%></strong>. This action will permenantly erase student profile and all corresponding performance data. If you wish to do so, please type in exact student name.</p>
+          <p class="text-justify"><strong class="text-warning">Warning: </strong>Delete <strong><%= `${profile.first_name} ${profile.last_name}`%></strong> will permenantly erase profile and all corresponding performance data.</p>
           <div class="form-group">
-            <input type="text" class="form-control">
+            <input id="delete-student-confirm" type="text" class="form-control" data-name="<%= `${profile.first_name} ${profile.last_name}` %>">
+            <small class="text-danger" id="delete-student-comment-error">Please type in student FULL name to verify this action</small>
+            <small class="text-success d-none" id="delete-student-comment-success">You have verified your action</small>
           </div>
-          <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+          <button type="submit" class="btn btn-danger btn-sm d-none" id="delete-student-btn">Delete</button>
           <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
         </form>
       </div>
     </div>
   </div>
 </div>
+
+<script src="/javascript/students/show.js"></script>
 
 <% include ../partials/footer %>
