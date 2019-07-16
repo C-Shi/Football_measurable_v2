@@ -6,7 +6,7 @@
     <form class="col-12">
       <div class="row">
         <!-- Area for creating student profile -->
-        <div class="col-md-8 form-profile">
+        <div class="col-md-8 offset-md-2 form-profile">
           <div class="form-row">
             <div class="col-md-6 mb-3">
               <label>First name</label>
@@ -74,13 +74,18 @@
             <small>Will apply default avatar if no image uploaded</small>
           </div>
 
-          <button type="submit" class="btn btn-sm btn-success">Create</button>
+          <p class="text-info">
+            Enter Student Performance Data?
+            <a href="#" id="add-data">Yes</a><span class="text-primary">&nbsp;/&nbsp;</span> <a href="#" id="add-data-false">No</a>
+          </p>
+
+          <button type="submit" class="btn btn-sm btn-success d-none">Create</button>
           <a href="/students" class="btn btn-secondary btn-sm">Go Back</a>
         </div>
 
         <!-- Area for input first student performance-->
 
-        <div class="col-md-4 form-performance">
+        <div class="col-md-4 d-none form-performance">
           <div class="form-row">
             <div class="col-sm-6 mb-3 form-group">
               <label>Bench Press 1st</label>
@@ -124,6 +129,7 @@
             <select class="custom-select" id="data-year" name="year">
             </select>
           </div>
+          <a class="text-danger" href="#" id="clear-data">I don't want to input data now</a>
 
         </div>
       </div>
@@ -141,6 +147,25 @@
         $('#data-year').append(option);
       }
     })();
+  })
+
+
+  $('#add-data').on('click', function(){
+    $(".form-profile").removeClass('offset-md-2');
+    $('.form-performance').removeClass('d-none');
+    $('button[type=submit]').removeClass('d-none');
+    $('#add-data').parent().fadeOut(1000)
+  })
+
+  $('#clear-data').on('click', function(){
+    $('.form-profile').addClass('offset-md-2');
+    $('.form-performance').addClass('d-none');
+    $('#add-data').parent().fadeIn(1000)
+    $('.form-performance input').val('');
+  })
+
+  $('#add-data-false').on('click', function(){
+    $('button[type=submit]').removeClass('d-none');
   })
 </script>
 
