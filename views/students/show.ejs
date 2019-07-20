@@ -69,8 +69,8 @@
     </div>
 
     <!-- student performance -->
-    <% if (performance) { %>
-      <div class="col-md-4 performance">
+    <div class="col-md-4 performance">
+      <% if (performance) { %>
         <table class="table">
           <col width="40%">
           <col width="60%">
@@ -115,8 +115,10 @@
             </tr>
           </tbody>
         </table>
-
-        <!-- Year Option Dropdown-->
+      <% }else{ %>
+        No Performance Record
+      <% } %>
+      <!-- Year Option Dropdown-->
         <div class="dropdown">
           <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Year Option
@@ -127,41 +129,15 @@
             <a class="dropdown-item" href="/students/<%= profile.id %>?year=2017">2017</a>
           </div>
         </div>
-      </div>
-    <% }else{ %>
-      <div class="col-md-4">
-        No Performance Record
-      </div>
-    <% } %>
-  </div>
-</div>
-
-
-<!-- modal for delete student -->
-<div class="modal fade" id="delete-student" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Delete Student</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form action="/students/<%= profile.id %>?_method=Delete" method="post">
-          <p class="text-justify"><strong class="text-warning">Warning: </strong>Delete <strong><%= `${profile.first_name} ${profile.last_name}`%></strong> will permenantly erase profile and all corresponding performance data.</p>
-          <div class="form-group">
-            <input id="delete-student-confirm" type="text" class="form-control" data-name="<%= `${profile.first_name} ${profile.last_name}` %>">
-            <small class="text-danger" id="delete-student-comment-error">Please type in student FULL name to verify this action</small>
-            <small class="text-success d-none" id="delete-student-comment-success">You have verified your action</small>
-          </div>
-          <button type="submit" class="btn btn-danger btn-sm d-none" id="delete-student-btn">Delete</button>
-          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-        </form>
-      </div>
+        <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#addPerformance">Add Performance</button>
+        <button class="btn btn-sm btn-info">Edit Current Year</button>
     </div>
   </div>
 </div>
+
+
+<% include ../partials/modal/deleteStudent %>
+<% include ../partials/modal/addPerformance %>
 
 <script src="/javascript/students/show.js"></script>
 
