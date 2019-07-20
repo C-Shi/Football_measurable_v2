@@ -48,13 +48,23 @@ router.get('/students/:id', (req, res) => {
 
 router.post('/students', (req, res) => {
   const profile = requestHelper.formatStudentInfo(req.body);
+  let new_student_id;
+  // create student profile
   studentHelper.createStudentProfile(profile)
   .then(id => {
     if (id) {
-      res.redirect(`/students/${id}`)
+      new_student_id = id[0];
+      // if adding performance data is required, then perform this
+      if(Number(req.body.performance)) {
+        const performance = requestHelper.formatPerformance(id[0], req.body)
+        return studentHelper.createStudentPerformance(performance)
+      }
     } else {
       throw new Error('Insersion Error, No student inserted')
     }
+  })
+  .then((performance_id) => {
+    res.redirect(`/students/${new_student_id}`)
   })
   .catch(error => {
     res.send(error.message)

@@ -79,6 +79,8 @@
             <a href="#" id="add-data">Yes</a><span class="text-primary">&nbsp;/&nbsp;</span> <a href="#" id="add-data-false">No</a>
           </p>
 
+          <input type="hidden" name="performance" value="0" id="performance-switch">
+
           <button type="submit" class="btn btn-sm btn-success d-none">Create</button>
           <a href="/students" class="btn btn-secondary btn-sm">Go Back</a>
         </div>
@@ -89,39 +91,39 @@
           <div class="form-row">
             <div class="col-sm-6 mb-3 form-group">
               <label>Bench Press 1st</label>
-              <input type="text" class="form-control" placeholder="Bench Press 1st Trail">
+              <input type="text" class="form-control" name="bench_press_first" placeholder="Bench Press 1st Trail">
             </div>
             <div class="col-sm-6 mb-3 form-group">
               <label>Bench Press 2st</label>
-              <input type="text" class="form-control" placeholder="Bench Press 2nd Trail">
+              <input type="text" class="form-control" name="bench_press_second" placeholder="Bench Press 2nd Trail">
             </div>
           </div>
           <div class="form-group">
             <label>Broad</label>
-            <input type="text" class="form-control" placeholder="Broad Jump">
+            <input type="text" class="form-control" name="broad" placeholder="Broad Jump">
           </div>
           <div class="form-group">
             <label>Vertical</label>
-            <input type="text" class="form-control" placeholder="Vertical Jump">
+            <input type="text" class="form-control" name="vertical" placeholder="Vertical Jump">
           </div>
           <div class="form-row">
             <div class="col-md-6 mb-3 form-group">
               <label>40: 1st</label>
-              <input type="text" class="form-control" placeholder="40 first trail">
+              <input type="text" class="form-control" name="forty_first" placeholder="40 first trail">
             </div>
             <div class="col-md-6 mb-3 form-group">
               <label>40: 2nd</label>
-              <input type="text" class="form-control" placeholder="40 second trial">
+              <input type="text" class="form-control" name="forty_second" placeholder="40 second trial">
             </div>
           </div>
           <div class="form-row">
             <div class="col-md-6 mb-3 form-group">
               <label>Shuttle:1st L</label>
-              <input type="text" class="form-control" placeholder="Shuttle:2nd R">
+              <input type="text" class="form-control" name="shuttle_first_L" placeholder="Shuttle:2nd R">
             </div>
             <div class="col-md-6 mb-3 form-group">
               <label>Shuttle:2nd R L</label>
-              <input type="text" class="form-control" placeholder="Shuttle:2nd R">
+              <input type="text" class="form-control" name="shuttle_second_R" placeholder="Shuttle:2nd R">
             </div>
           </div>
           <div class="form-group">
@@ -154,6 +156,7 @@
     $(".form-profile").removeClass('offset-md-2');
     $('.form-performance').removeClass('d-none');
     $('button[type=submit]').removeClass('d-none');
+    $('#performance-switch').val('1');
     $('#add-data').parent().fadeOut(1000)
   })
 
@@ -161,10 +164,12 @@
     $('.form-profile').addClass('offset-md-2');
     $('.form-performance').addClass('d-none');
     $('#add-data').parent().fadeIn(1000)
+    $('#performance-switch').val('0');
     $('.form-performance input').val('');
   })
 
   $('#add-data-false').on('click', function(){
+    $('#performance-switch').val('0');
     $('button[type=submit]').removeClass('d-none');
   })
 </script>
