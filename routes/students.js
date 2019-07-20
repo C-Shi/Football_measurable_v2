@@ -30,9 +30,13 @@ router.get('/students/new', (req, res) => {
 
 router.get('/students/:id', (req, res) => {
   const studentId = req.params.id
+  let year = Number(req.query.year);
+  if(!(year && year > 2000 && year < 2050)) {
+    year = null;
+  }
   Promise.all([
     studentHelper.fetchStudentById(studentId),
-    studentHelper.fetchStudentPerformance(studentId),
+    studentHelper.fetchStudentPerformance(studentId, year),
     commentHelper.fetchStudentComments(studentId)
   ])
   .then(results => {
