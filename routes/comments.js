@@ -4,6 +4,16 @@ const studentHelper = require('../lib/studentHelper');
 const requestHelper = require('../lib/requestHelper');
 const commentHelper = require('../lib/commentHelper');
 
+router.post('/', (req, res) => {
+  const studentId = req.params.id;
+  const content = req.body.comment;
+  commentHelper.createComment(studentId, content)
+  .then(() => res.redirect(`/students/${studentId}`))
+  .catch(error => {
+    res.send(error.message)
+  })
+})
+
 router.delete('/:commentId', (req, res) => {
   const commentId = req.params.commentId;
   const studentId = req.params.id;

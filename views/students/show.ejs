@@ -45,13 +45,13 @@
               </div>
           <% }) %>
 
-          <form action="/student/<%= profile.id %>/comment" method='POST' id="commentSection" style="display:none">
+          <form action="/students/<%= profile.id %>/comment" method='POST' id="commentSection" style="display:none">
             <script>
              $('#addCommentButton').click(function(){
               $('#commentSection').slideToggle()
              })
             </script>
-            <textarea placeholder="Add a comment to this student" rows="4" class="form-control" id="commentText" name="comment[text]"></textarea>
+            <textarea placeholder="Add a comment to this student" rows="4" class="form-control" id="commentText" name="comment"></textarea>
             <p></p>
             <button class="btn btn-sm btn-success">Add</button>
             <button type="button" id="clearComment" class="btn btn-sm btn-secondary">Clear</a>
