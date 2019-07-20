@@ -1,6 +1,7 @@
 const express = require('express');
 const router  = express.Router({mergeParams:true})
 const studentHelper = require('../lib/studentHelper');
+const requestHelper = require('../lib/requestHelper');
 
 router.get('/students', (req, res) => {
   res.render('students/index');
@@ -46,7 +47,18 @@ router.get('/students/:id', (req, res) => {
 })
 
 router.post('/students', (req, res) => {
-
+  const profile = requestHelper.formatStudentInfo(req.body);
+  studentHelper.createStudentProfile(profile)
+  .then(id => {
+    if (id) {
+      res.redirect(`/students/${id}`)
+    } else {
+      throw new Error('Insersion Error, No student inserted')
+    }
+  })
+  .catch(error => {
+    res.send(error.message)
+  })
 })
 
 router.get('/students/:id/edit', (req, res) => {
