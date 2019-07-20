@@ -2,6 +2,8 @@ const express = require('express');
 const router  = express.Router({mergeParams:true})
 const studentHelper = require('../lib/studentHelper');
 const requestHelper = require('../lib/requestHelper');
+const commentHelper = require('../lib/commentHelper');
+const commentRoute = require('./comments');
 
 router.get('/students', (req, res) => {
   res.render('students/index');
@@ -31,7 +33,7 @@ router.get('/students/:id', (req, res) => {
   Promise.all([
     studentHelper.fetchStudentById(studentId),
     studentHelper.fetchStudentPerformance(studentId),
-    studentHelper.fetchStudentComments(studentId)
+    commentHelper.fetchStudentComments(studentId)
   ])
   .then(results => {
     const profile = results[0];
@@ -104,5 +106,7 @@ router.delete('/students/:id', (req, res) => {
   })
   .catch(error => res.send(error.message))
 })
+
+router.use('/students/:id/comment', commentRoute);
 
 module.exports = router;

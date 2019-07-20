@@ -41,7 +41,7 @@
         <div class="card-body">
           <% comments.forEach(function(comment){ %>
               <div style="margin-bottom: 5px"><%= comment.content %>
-                <form action="/student/<%= profile.id%>/comment/<%= comment.id%>?_method=DELETE" method="POST" style="display:inline; float:right"><button class="badge badge-dark">Delete</button></form>
+                <form action="/students/<%= profile.id%>/comment/<%= comment.id %>?_method=DELETE" method="POST" style="display:inline; float:right"><button class="badge badge-dark">Delete</button></form>
               </div>
           <% }) %>
 
