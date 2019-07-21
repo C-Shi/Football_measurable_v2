@@ -3,7 +3,7 @@
 <div class="container">
   <div class="row">
     
-    <form class="col-12" action="/students" method="POST">
+    <form class="col-12" action="/students" method="POST" enctype='multipart/form-data'>
       <div class="row">
         <!-- Area for creating student profile -->
         <div class="col-md-8 offset-md-2 form-profile">
@@ -68,7 +68,7 @@
           <!-- image upload optional -->
           <div class="form-group">
             <div class="custom-file">
-              <input type="file" class="custom-file-input" id="customFile">
+              <input type="file" class="custom-file-input" id="customFile" name="image" accept="image/*">
               <label class="custom-file-label" for="customFile">Choose file</label>
             </div>
             <small>Will apply default avatar if no image uploaded</small>

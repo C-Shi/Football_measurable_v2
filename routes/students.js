@@ -80,9 +80,12 @@ router.get('/students/:id', (req, res) => {
   })
 })
 
-router.post('/students', (req, res) => {
+router.post('/students', upload.single('image'), (req, res) => {
   const profile = requestHelper.formatStudentInfo(req.body);
   let new_student_id;
+  const image = req.file ? req.file.path : "https://res.cloudinary.com/dhi1ngld5/image/upload/v1532544942/default_avatar.png"
+
+
   // create student profile
   studentHelper.createStudentProfile(profile)
   .then(id => {
