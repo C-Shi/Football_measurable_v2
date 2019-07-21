@@ -12,6 +12,7 @@ exports.up = function(knex, Promise) {
     t.string('shuttle_first_L');
     t.string('shuttle_second_R');
     t.string('year').notNullable();
+    t.unique(['student_id', 'year']);
     t.timestamp('updated_at').defaultTo(knex.fn.now());
   })
 };
