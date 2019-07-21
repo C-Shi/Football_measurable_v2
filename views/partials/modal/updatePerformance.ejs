@@ -1,0 +1,61 @@
+<!-- Modal -->
+<div class="modal fade" id="updatePerformance" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Update Year <%= performance.year %></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="/students/<%= profile.id %>/performance?_method=PUT" method="POST" id="form-update">
+            <div class="form-row">
+              <div class="col-sm-6 mb-3 form-group">
+                <label>Bench Press 1st</label>
+                <input type="text" class="form-control" name="bench_press_first" value="<%= performance.bench_press_first %>" placeholder="Bench Press 1st Trail">
+              </div>
+              <div class="col-sm-6 mb-3 form-group">
+                <label>Bench Press 2st</label>
+                <input type="text" class="form-control" name="bench_press_second" value="<%= performance.bench_press_second %>" placeholder="Bench Press 2nd Trail">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Broad</label>
+              <input type="text" class="form-control" name="broad" value="<%= performance.broad %>" placeholder="Broad Jump">
+            </div>
+            <div class="form-group">
+              <label>Vertical</label>
+              <input type="text" class="form-control" name="vertical" value="<%= performance.vertical %>" placeholder="Vertical Jump">
+            </div>
+            <div class="form-row">
+              <div class="col-md-6 mb-3 form-group">
+                <label>40: 1st</label>
+                <input type="text" class="form-control" name="forty_first" value="<%= performance.forty_first %>" placeholder="40 first trail">
+              </div>
+              <div class="col-md-6 mb-3 form-group">
+                <label>40: 2nd</label>
+                <input type="text" class="form-control" name="forty_second" value="<%= performance.forty_second %>" placeholder="40 second trial">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-6 mb-3 form-group">
+                <label>Shuttle:1st L</label>
+                <input type="text" class="form-control" name="shuttle_first_L" value="<%= performance.shuttle_first_L %>" placeholder="Shuttle:2nd R">
+              </div>
+              <div class="col-md-6 mb-3 form-group">
+                <label>Shuttle:2nd R L</label>
+                <input type="text" class="form-control" name="shuttle_second_R" value="<%= performance.shuttle_second_R %>" placeholder="Shuttle:2nd R">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Year</label>
+              <input type="text" name="year" class="form-control" value="<%= performance.year %>" readonly>
+            </div>
+
+            <button type="submit" class="btn btn-sm btn-success">Update</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

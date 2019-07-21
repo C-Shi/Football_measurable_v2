@@ -9,7 +9,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form action="/students/<%= profile.id %>/performance" method="POST">
+        <form action="/students/<%= profile.id %>/performance" method="POST" id="form-add">
             <div class="form-row">
               <div class="col-sm-6 mb-3 form-group">
                 <label>Bench Press 1st</label>
@@ -54,7 +54,7 @@
               <script>
                 $(document).ready(function(){
                   var year = new Date().toISOString().slice(0,4);
-                  $('input[name=year]').val(year);
+                  $('#form-add input[name=year]').val(year);
                 })
               </script>
             </div>

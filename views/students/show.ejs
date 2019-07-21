@@ -115,6 +115,7 @@
             </tr>
           </tbody>
         </table>
+        <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#updatePerformance">Edit Current Year</button>
       <% }else{ %>
         No Performance Record
       <% } %>
@@ -130,7 +131,6 @@
           </div>
         </div>
         <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#addPerformance">Add Performance</button>
-        <button class="btn btn-sm btn-info">Edit Current Year</button>
     </div>
   </div>
 </div>
@@ -138,6 +138,7 @@
 
 <% include ../partials/modal/deleteStudent %>
 <% include ../partials/modal/addPerformance %>
+<% include ../partials/modal/updatePerformance %>
 
 <script src="/javascript/students/show.js"></script>
 
