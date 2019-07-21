@@ -3,7 +3,11 @@ const router  = express.Router({mergeParams:true})
 const userHelper = require('../lib/userHelper');
 
 router.get('/register', (req, res) => {
+  res.render('users/register');
+})
 
+router.post('/register', (req, res) => {
+  console.log(req.body);
 })
 
 router.get('/login', (req, res) => {
