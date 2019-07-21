@@ -2,20 +2,10 @@ const express = require('express');
 const router  = express.Router({mergeParams:true})
 const userHelper = require('../lib/userHelper');
 const validator = require('../lib/validator');
-const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-// const msg = {
-//   to: 'test@example.com',
-//   from: 'test@example.com',
-//   subject: 'Sending with Twilio SendGrid is Fun',
-//   text: 'and easy to do anywhere, even with Node.js',
-//   html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-// };
-// sgMail.send(msg);
 
-// router.get('/register', (req, res) => {
-//   res.render('users/register');
-// })
+router.get('/register', (req, res) => {
+  res.render('users/register');
+})
 
 router.post('/register', async (req, res) => {
   const user = Object.assign({}, req.body);
@@ -68,7 +58,23 @@ router.post('/logout', (req, res) => {
   res.redirect('/login');
 })
 
+router.post('/forget', (req, res) => {
+  const email = req.body.email;
+  userHelper.findUserByEmail(email)
+  .then(user => {
+    if (!user) {
+      res.send("This Account Does Not Exist");
+    } else {
+      return userHelper.resetHandler(email)
+    }
+  })
+  .then(() => {
+    res.redirect('/login')
+  })
+})
 
-
+router.get('/reset/:token', (req, res) => {
+  res.render('users/reset')
+})
 
 module.exports = router;
