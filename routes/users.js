@@ -34,9 +34,6 @@ router.post('/logout', (req, res) => {
   res.redirect('/login');
 })
 
-router.get('/logout', (req, res) => {
-  req.session = null;
-  res.redirect('/login');
-})
+
 
 module.exports = router;
