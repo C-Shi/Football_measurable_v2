@@ -121,16 +121,41 @@ router.get('/students/:id/edit', (req, res) => {
 })
 
 
-router.put('/students/:id/update', (req, res) => {
+router.put('/students/:id/update', upload.single('image'), (req, res) => {
   const studentId = req.params.id;
   const profile = req.body;
-  studentHelper.updateStudentById(studentId, profile)
-  .then(() => {
-    res.redirect(`/students/${studentId}`);
-  })
-  .catch(error => {
-    res.send(error.message);
-  })
+
+  // check if there is a file upload
+  if (req.file) {
+    const image = req.file ? req.file.path : "https://res.cloudinary.com/dhi1ngld5/image/upload/v1532544942/default_avatar.png"
+    studentHelper.fetchStudentById(studentId)
+    .then(student => {
+      const image_id = student.image_id;
+      return cloudinary.v2.uploader.destroy(image_id)
+    })
+    .then(() => {
+      return cloudinary.uploader.upload(image)
+    })
+    .then(result => {
+      profile.image = result.secure_url;
+      profile.image_id = result.image_id;
+      return studentHelper.updateStudentById(studentId, profile)
+    })
+    .then(() => {
+      res.redirect(`/students/${studentId}`);
+    })
+    .catch(error => {
+      res.send(error.message);
+    })
+  } else {
+    studentHelper.updateStudentById(studentId, profile)
+    .then(() => {
+      res.redirect(`/students/${studentId}`);
+    })
+    .catch(error => {
+      res.send(error.message);
+    })
+  }
 })
 
 router.delete('/students/:id', (req, res) => {

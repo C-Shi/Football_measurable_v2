@@ -3,7 +3,7 @@
 <div class="container student-edit">
   <div class="row">
     <div class="col-md-8 offset-md-2">
-      <form action="/students/<%= profile.id %>/update?_method=PUT" method="POST">
+      <form action="/students/<%= profile.id %>/update?_method=PUT" method="POST" enctype='multipart/form-data'>
        <!-- basic info -->
         <div class="form-row">
           <div class="col-md-6 mb-3">
@@ -66,8 +66,14 @@
         <!-- image upload optional -->
         <div class="form-group">
           <div class="custom-file">
-            <input type="file" class="custom-file-input" id="customFile">
+            <input type="file" class="custom-file-input" id="customFile" name="image" accept="image/*">
             <label class="custom-file-label" for="customFile">Choose file</label>
+            <script>
+              $('.custom-file-input').on('change', function() { 
+                var fileName = $(this).val().split('\\').pop() || "Choose file"; 
+                $(this).next('.custom-file-label').addClass("selected").html(fileName); 
+              });
+            </script>
           </div>
           <small>Only Upload If You Want To Change Student Profile Image</small>
         </div>
