@@ -160,7 +160,18 @@ router.put('/students/:id/update', upload.single('image'), (req, res) => {
 
 router.delete('/students/:id', (req, res) => {
   const studentId = req.params.id;
-  studentHelper.deleteStudentById(studentId)
+  studentHelper.fetchStudentImageById(studentId)
+  .then(result => {
+    console.log(result)
+    if (!result) {
+      throw new Error('Invalid Student Id')
+    }
+    const imageId = result.image_id
+    return cloudinary.v2.uploader.destroy(imageId)
+  })
+  .then(() => {
+    return studentHelper.deleteStudentById(studentId)
+  })
   .then((row) => {
     if(row === 1) {
       res.redirect('/students')
