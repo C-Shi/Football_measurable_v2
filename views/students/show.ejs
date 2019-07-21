@@ -70,6 +70,25 @@
 
     <!-- student performance -->
     <div class="col-md-4 performance">
+        <!-- Year Control -->
+        <div class="container-fluid">
+          <div class="row">
+            <% if (performance) { %>
+            <h4 class="mr-3">Data of <%= performance.year %></h4>
+            <% } %>
+            <div class="dropdown">
+              <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Year Option
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="/students/<%= profile.id %>?year=2019">2019</a>
+                <a class="dropdown-item" href="/students/<%= profile.id %>?year=2018">2018</a>
+                <a class="dropdown-item" href="/students/<%= profile.id %>?year=2017">2017</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
       <% if (performance) { %>
         <table class="table">
           <col width="40%">
@@ -115,22 +134,17 @@
             </tr>
           </tbody>
         </table>
+        <!-- button for modifying data -->
+        <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#addPerformance">Add Performance</button>
         <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#updatePerformance">Edit Current Year</button>
       <% }else{ %>
-        No Performance Record
-      <% } %>
-      <!-- Year Option Dropdown-->
-        <div class="dropdown">
-          <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Year Option
-          </button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="/students/<%= profile.id %>?year=2019">2019</a>
-            <a class="dropdown-item" href="/students/<%= profile.id %>?year=2018">2018</a>
-            <a class="dropdown-item" href="/students/<%= profile.id %>?year=2017">2017</a>
+        <div class="jumbotron">
+          <div class="container">
+            <h1 class="display-5">No Record This Year</h1>
+          <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#addPerformance">Add Performance</button>
           </div>
         </div>
-        <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#addPerformance">Add Performance</button>
+      <% } %>
     </div>
   </div>
 </div>
@@ -138,7 +152,9 @@
 
 <% include ../partials/modal/deleteStudent %>
 <% include ../partials/modal/addPerformance %>
+<% if (performance) { %>
 <% include ../partials/modal/updatePerformance %>
+<% } %>
 
 <script src="/javascript/students/show.js"></script>
 

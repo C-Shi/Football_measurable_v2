@@ -31,6 +31,20 @@ router.put('/', (req, res) => {
   const studentId = req.params.id;
   const rawPerformance = req.body;
   const performance = requestHelper.formatPerformance(studentId, rawPerformance);
+  // validator
+  Promise.all([
+    validator.performanceValidator.hasEntry(performance),
+    validator.isYear(performance.year)
+  ])
+  .then(() => {
+    return performanceHelper.updateStudentPerformance(performance)
+  })
+  .then(() => {
+    res.redirect(`/students/${studentId}?year=${performance.year}`)
+  })
+  .catch(error => {
+    res.send(error.message);
+  })
 })
 
 module.exports = router;
