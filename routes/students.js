@@ -3,6 +3,7 @@ const router  = express.Router({mergeParams:true})
 const studentHelper = require('../lib/studentHelper');
 const requestHelper = require('../lib/requestHelper');
 const commentHelper = require('../lib/commentHelper');
+const performanceHelper = require('../lib/performanceHelper');
 const commentRoute = require('./comments');
 
 router.get('/students', (req, res) => {
@@ -36,7 +37,7 @@ router.get('/students/:id', (req, res) => {
   }
   Promise.all([
     studentHelper.fetchStudentById(studentId),
-    studentHelper.fetchStudentPerformance(studentId, year),
+    performanceHelper.fetchStudentPerformance(studentId, year),
     commentHelper.fetchStudentComments(studentId)
   ])
   .then(results => {
@@ -63,7 +64,7 @@ router.post('/students', (req, res) => {
       // if adding performance data is required, then perform this
       if(Number(req.body.performance)) {
         const performance = requestHelper.formatPerformance(id[0], req.body)
-        return studentHelper.createStudentPerformance(performance)
+        return performanceHelper.createStudentPerformance(performance)
       }
     } else {
       throw new Error('Insersion Error, No student inserted')
