@@ -85,9 +85,13 @@ router.post('/students', upload.single('image'), (req, res) => {
   let new_student_id;
   const image = req.file ? req.file.path : "https://res.cloudinary.com/dhi1ngld5/image/upload/v1532544942/default_avatar.png"
 
-
-  // create student profile
-  studentHelper.createStudentProfile(profile)
+  cloudinary.uploader.upload(image)
+  .then(result => {
+    profile.image = result.secure_url
+    profile.image_id = result.public_id
+    // create student profile
+    return studentHelper.createStudentProfile(profile)
+  })
   .then(id => {
     if (id) {
       new_student_id = id[0];

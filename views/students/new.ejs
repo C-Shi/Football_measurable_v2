@@ -70,6 +70,12 @@
             <div class="custom-file">
               <input type="file" class="custom-file-input" id="customFile" name="image" accept="image/*">
               <label class="custom-file-label" for="customFile">Choose file</label>
+              <script>
+                $('.custom-file-input').on('change', function() { 
+                  var fileName = $(this).val().split('\\').pop() || "Choose file"; 
+                  $(this).next('.custom-file-label').addClass("selected").html(fileName); 
+                });
+              </script>
             </div>
             <small>Will apply default avatar if no image uploaded</small>
           </div>
