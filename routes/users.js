@@ -80,7 +80,13 @@ router.get('/reset/:token', (req, res) => {
     if (!user) {
       res.render('users/reset', {error: 'Invalid Token'})
     } else {
-      res.render('users/reset', {error: undefined, email: user.email})
+      let expiry = user.password_reset_token_expiry;
+      let now = new Date().toISOString().slice(0, 19).replace('T', ' ');
+      if(new Date(now) > new Date(expiry)) {
+        res.render('users/reset', {error: "Token Expired. It Was Valid Within One Hour"})
+      } else {
+        res.render('users/reset', {error: undefined, email: user.email})
+      }
     }
   })
   
