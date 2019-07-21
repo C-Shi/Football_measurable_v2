@@ -9,7 +9,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form>
+        <form action="/students/<%= profile.id %>/performance" method="POST">
             <div class="form-row">
               <div class="col-sm-6 mb-3 form-group">
                 <label>Bench Press 1st</label>
@@ -58,6 +58,8 @@
                 })
               </script>
             </div>
+
+            <button type="submit" class="btn btn-sm btn-success">Enter Data</button>
         </form>
       </div>
     </div>

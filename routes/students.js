@@ -4,7 +4,10 @@ const studentHelper = require('../lib/studentHelper');
 const requestHelper = require('../lib/requestHelper');
 const commentHelper = require('../lib/commentHelper');
 const performanceHelper = require('../lib/performanceHelper');
+
+// include performance route
 const commentRoute = require('./comments');
+const performanceRoute = require('./performance');
 
 router.get('/students', (req, res) => {
   res.render('students/index');
@@ -113,5 +116,6 @@ router.delete('/students/:id', (req, res) => {
 })
 
 router.use('/students/:id/comment', commentRoute);
+router.use('/students/:id/performance', performanceRoute);
 
 module.exports = router;
