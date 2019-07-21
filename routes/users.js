@@ -74,7 +74,16 @@ router.post('/forget', (req, res) => {
 })
 
 router.get('/reset/:token', (req, res) => {
-  res.render('users/reset')
+  const token = req.params.token
+  userHelper.findOneUserBy('password_reset_token', token)
+  .then(user => {
+    if (!user) {
+      res.render('users/reset', {error: 'Invalid Token'})
+    } else {
+      res.render('users/reset', {error: undefined, email: user.email})
+    }
+  })
+  
 })
 
 module.exports = router;

@@ -1,3 +1,29 @@
 <% include ../partials/header %>
 
+<div class="container">
+  <div class="row">
+    <% if (error) { %>
+      <div class="jumbotron">
+        <h1 class="display-4">Cannot Process Request</h1>
+        <p class="lead"><%= error %></p>
+        <hr class="my-4">
+        <a class="btn btn-primary btn-sm" href="/login">Login</a>
+      </div>
+    <% } else { %>
+      <form class="col-md-8 offset-md-2">
+        <div class="form-group">
+          <label>Email: </label>
+          <input type="email" class="form-control" value="<%= email %>" name="email" readonly>
+        </div>
+        <div class="form-group">
+          <label>Password:</label>
+          <input type="password" class="form-control" placeholder="password" name="password">
+        </div>
+
+        <button class="btn btn-success btn-sm">Reset</button>
+      </form>
+    <% }%>
+  </div>
+</div>
+
 <% include ../partials/footer %>
