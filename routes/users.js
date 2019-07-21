@@ -11,8 +11,10 @@ router.post('/register', async (req, res) => {
   const user = Object.assign({}, req.body);
   user.admin = user.admin ? true : false;
   user.coach = user.coach ? true : false;
-  if(validator.isEmailSync(user.email)) {
-    validator.userValidator.isUniqueUser(user.email)
+    validator.isEmail(user.email)
+    .then(() => {
+      return validator.userValidator.isUniqueUser(user.email)
+    })
     .then(isUnique => {
       if(isUnique) {
         return userHelper.register(user)
@@ -26,9 +28,6 @@ router.post('/register', async (req, res) => {
     .catch(error => {
       res.send(error.message)
     })
-  } else {
-    res.send('invalid email');
-  }
 })
 
 router.get('/login', (req, res) => {
