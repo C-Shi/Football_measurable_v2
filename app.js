@@ -19,6 +19,16 @@ app.use(cookieSession({
   name: 'session',
   secret: 'This ensure the most secure application'
 }))
+app.use((req, res, next) => {
+  // set global locals
+  const { email, userId, name } = req.session;
+  if (email) {
+    res.locals.user = { email, userId, name};
+  } else {
+    res.locals.user = undefined;
+  }
+  return next()
+})
 
 // requrie routes
 const studentsRoute = require('./routes/students');

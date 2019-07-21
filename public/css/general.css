@@ -1,3 +1,7 @@
 html, body {
   height: 100%;
 }
+
+.dropdown-menu {
+  left: -80px;
+}

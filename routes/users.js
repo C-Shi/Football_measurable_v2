@@ -16,10 +16,10 @@ router.post('/login', (req, res) => {
   userHelper.authenticate(email, password)
   .then(auth => {
     if(auth) {
-      // req.session.email = auth.email;
-      // req.session.userId = auth.id;
-      // req.session.name = auth.name;
-      res.send(auth);
+      req.session.email = auth.email;
+      req.session.userId = auth.id;
+      req.session.name = auth.name;
+      res.redirect('/students');
     } else {
       res.send('The account does not exist or password incorrect')
     }
@@ -27,10 +27,14 @@ router.post('/login', (req, res) => {
   .catch(error => {
     res.send(error.message)
   })
-  console.log(req.body);
 })
 
 router.post('/logout', (req, res) => {
+  req.session = null;
+  res.redirect('/login');
+})
+
+router.get('/logout', (req, res) => {
   req.session = null;
   res.redirect('/login');
 })
