@@ -85,11 +85,38 @@ router.get('/reset/:token', (req, res) => {
       if(new Date(now) > new Date(expiry)) {
         res.render('users/reset', {error: "Token Expired. It Was Valid Within One Hour"})
       } else {
-        res.render('users/reset', {error: undefined, email: user.email})
+        res.render('users/reset', {error: undefined, email: user.email, token})
       }
     }
   })
-  
+})
+
+router.post('/reset/:token', (req, res) => {
+  const token = req.params.token;
+  const email = req.body.email;
+  const password = req.body.password;
+  userHelper.findOneUserBy('password_reset_token', token)
+  .then(user => {
+    if (!user) {
+      res.render('users/reset', {error: 'Invalid Token'})
+    } else {
+      let expiry = user.password_reset_token_expiry;
+      let now = new Date().toISOString().slice(0, 19).replace('T', ' ');
+      if(new Date(now) > new Date(expiry)) {
+        res.render('users/reset', {error: "Token Expired. It Was Valid Within One Hour"})
+      } else {
+        // reset password
+        return userHelper.changePassword(email, token, password)
+      }
+    }
+  })
+  .then(() => {
+    res.redirect('/login');
+  })
+  .catch(error => {
+    res.send(error);
+  })
+
 })
 
 module.exports = router;
