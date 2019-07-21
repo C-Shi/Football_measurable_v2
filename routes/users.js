@@ -1,13 +1,34 @@
 const express = require('express');
 const router  = express.Router({mergeParams:true})
 const userHelper = require('../lib/userHelper');
+const validator = require('../lib/validator');
 
 router.get('/register', (req, res) => {
   res.render('users/register');
 })
 
-router.post('/register', (req, res) => {
-  console.log(req.body);
+router.post('/register', async (req, res) => {
+  const user = Object.assign({}, req.body);
+  user.admin = user.admin ? true : false;
+  user.coach = user.coach ? true : false;
+  if(validator.isEmailSync(user.email)) {
+    validator.userValidator.isUniqueUser(user.email)
+    .then(isUnique => {
+      if(isUnique) {
+        return userHelper.register(user)
+      } else {
+        throw new Error('duplicate Email')
+      }
+    })
+    .then(newUser => {
+      res.redirect('/students');
+    })
+    .catch(error => {
+      res.send(error.message)
+    })
+  } else {
+    res.send('invalid email');
+  }
 })
 
 router.get('/login', (req, res) => {
