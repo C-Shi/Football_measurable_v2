@@ -38,6 +38,9 @@ app.use((req, res, next) => {
 // requrie routes
 const studentsRoute = require('./routes/students');
 const usersRoute = require('./routes/users');
+app.get('/', (req, res) => {
+  res.redirect('/students');
+})
 app.use('/', studentsRoute);
 app.use('/', usersRoute);
 

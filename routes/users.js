@@ -2,12 +2,13 @@ const express = require('express');
 const router  = express.Router({mergeParams:true})
 const userHelper = require('../lib/userHelper');
 const validator = require('../lib/validator');
+const middleware = require('../middleware');
 
 router.get('/register', (req, res) => {
   res.render('users/register');
 })
 
-router.post('/register', async (req, res) => {
+router.post('/register', (req, res) => {
   const user = Object.assign({}, req.body);
   user.admin = user.admin ? true : false;
   user.coach = user.coach ? true : false;
@@ -30,11 +31,11 @@ router.post('/register', async (req, res) => {
     })
 })
 
-router.get('/login', (req, res) => {
+router.get('/login', middleware.isNotLogin, (req, res) => {
   res.render('users/login');
 })
 
-router.post('/login', (req, res) => {
+router.post('/login', middleware.isNotLogin, (req, res) => {
   const email = req.body.email.toLowerCase();
   const password = req.body.password;
   userHelper.authenticate(email, password)
@@ -53,12 +54,12 @@ router.post('/login', (req, res) => {
   })
 })
 
-router.post('/logout', (req, res) => {
+router.post('/logout', middleware.isLogin, (req, res) => {
   req.session = null;
   res.redirect('/login');
 })
 
-router.post('/forget', (req, res) => {
+router.post('/forget', middleware.isNotLogin, (req, res) => {
   const email = req.body.email;
   userHelper.findUserByEmail(email)
   .then(user => {
@@ -73,7 +74,7 @@ router.post('/forget', (req, res) => {
   })
 })
 
-router.get('/reset/:token', (req, res) => {
+router.get('/reset/:token', middleware.isNotLogin, (req, res) => {
   const token = req.params.token
   userHelper.findOneUserBy('password_reset_token', token)
   .then(user => {
@@ -91,7 +92,7 @@ router.get('/reset/:token', (req, res) => {
   })
 })
 
-router.post('/reset/:token', (req, res) => {
+router.post('/reset/:token', middleware.isNotLogin, (req, res) => {
   const token = req.params.token;
   const email = req.body.email;
   const password = req.body.password;

@@ -5,13 +5,15 @@ module.exports = {
     if(req.session.email) {
       return next()
     } else {
+      req.flash('error', 'Please Login First')
       res.redirect('/login');
     }
   },
 
   isNotLogin: (req, res, next) => {
     if(req.session.email) {
-      res.redirect('back');
+      req.flash('info', 'You Have Already Login! Welcome');
+      res.redirect('/students');
     } else {
       return next()
     }
@@ -23,6 +25,7 @@ module.exports = {
       if(user.coach) {
         next()
       } else {
+        req.flash('error', 'You are Unauthorized to Perform this action');
         res.redirect('back');
       }
     })
@@ -31,5 +34,7 @@ module.exports = {
       res.send(error.message);
     })
   }, 
+
+  
   
 }
