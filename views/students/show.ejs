@@ -14,8 +14,10 @@
           <p class="card-text"><strong>Height: </strong><%= profile.height %></p>
           <p class="card-text"><strong>Weight: </strong><%= profile.weight %> lb</p>
           <p class="card-text"><strong>Position: </strong><%= profile.position || 'N/A' %></p>
-          <a href="/students/<%= profile.id %>/edit" class="btn btn-success btn-sm">Edit Profile</a>
-          <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete-student">Delete</button>
+          <% if (user && user.coach) { %>
+            <a href="/students/<%= profile.id %>/edit" class="btn btn-success btn-sm">Edit Profile</a>
+            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete-student">Delete</button>
+          <% } %>
         </div>
       </div>
     </div>
@@ -36,12 +38,16 @@
       <div class="card">
         <div class="card-header">
           Coach comments 
-          <a href="#" id="addCommentButton" style="float:right"><i class="fas fa-plus"></i>Add Comment</a>
+          <% if (user && user.coach) { %>
+            <a href="#" id="addCommentButton" style="float:right"><i class="fas fa-plus"></i>Add Comment</a>
+          <% } %>
         </div>
         <div class="card-body">
           <% comments.forEach(function(comment){ %>
               <div style="margin-bottom: 5px"><%= comment.content %>
+                <% if (user && user.coach) { %>
                 <form action="/students/<%= profile.id%>/comment/<%= comment.id %>?_method=DELETE" method="POST" style="display:inline; float:right"><button class="badge badge-dark">Delete</button></form>
+                <% } %>
               </div>
           <% }) %>
 
@@ -135,8 +141,10 @@
           </tbody>
         </table>
         <!-- button for modifying data -->
-        <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#addPerformance">Add Performance</button>
-        <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#updatePerformance">Edit Current Year</button>
+        <% if (user && user.coach) { %>
+          <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#addPerformance">Add Performance</button>
+          <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#updatePerformance">Edit Current Year</button>
+        <% } %>
       <% }else{ %>
         <div class="jumbotron">
           <div class="container">

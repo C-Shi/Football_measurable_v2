@@ -26,9 +26,9 @@ app.use((req, res, next) => {
   res.locals.errorMessage = req.flash('error');
   res.locals.infoMessage = req.flash('info');
   // set global locals
-  const { email, userId, name } = req.session;
+  const { email, userId, name, admin, coach, developer } = req.session;
   if (email) {
-    res.locals.user = { email, userId, name};
+    res.locals.user = { email, userId, name, coach, admin, developer};
   } else {
     res.locals.user = undefined;
   }

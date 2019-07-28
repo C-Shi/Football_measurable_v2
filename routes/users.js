@@ -44,6 +44,9 @@ router.post('/login', middleware.isNotLogin, (req, res) => {
       req.session.email = auth.email;
       req.session.userId = auth.id;
       req.session.name = auth.name;
+      req.session.coach = auth.coach;
+      req.session.developer = auth.developer;
+      req.session.admin = auth.admin;
       res.redirect('/students');
     } else {
       res.send('The account does not exist or password incorrect')
