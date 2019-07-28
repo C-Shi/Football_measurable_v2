@@ -28,6 +28,7 @@ router.delete('/:commentId',
       req.flash('error', 'You cannot delete other\'s comment');
       return redirect('back');
     }
+    return next();
   })
   .catch(error => {
     // server error

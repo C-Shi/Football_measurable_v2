@@ -4,9 +4,10 @@ const studentHelper = require('../lib/studentHelper');
 const requestHelper = require('../lib/requestHelper');
 const performanceHelper = require('../lib/performanceHelper');
 const validator = require('../lib/validator');
+const middleware = require('../middleware');
 
 // add a performance record
-router.post('/', (req, res) => {
+router.post('/', middleware.isCoach, (req, res) => {
   const studentId = req.params.id;
   const rawPerformance = req.body;
   const performance = requestHelper.formatPerformance(studentId, rawPerformance);
@@ -27,7 +28,7 @@ router.post('/', (req, res) => {
 })
 
 // update a performance record
-router.put('/', (req, res) => {
+router.put('/', middleware.isCoach, (req, res) => {
   const studentId = req.params.id;
   const rawPerformance = req.body;
   const performance = requestHelper.formatPerformance(studentId, rawPerformance);
