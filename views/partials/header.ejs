@@ -21,3 +21,21 @@
   <body>
   
   <% include ./navbar %>
+
+  <div class="container flash">
+    <% if ( successMessage && successMessage.length > 0 ) { %>
+      <div class="alert alert-success" role="alert">
+        <%= successMessage %>
+      </div>
+    <% } %>
+    <% if ( errorMessage && errorMessage.length > 0 ) { %>
+      <div class="alert alert-danger" role="alert">
+        <%= errorMessage %>
+      </div>
+    <% } %>
+    <% if ( infoMessage && infoMessage.length > 0 ) { %>
+      <div class="alert alert-info" role="alert">
+        <%= infoMessage %>
+      </div>
+    <% } %>
+  </div>

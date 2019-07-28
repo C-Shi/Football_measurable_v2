@@ -14,17 +14,37 @@ router.post('/', (req, res) => {
   })
 })
 
-router.delete('/:commentId', (req, res) => {
+router.delete('/:commentId', 
+// middleware checking if comment belongs to user
+(req, res, next) => {
+  const commentId = req.params.commentId;
+  commentHelpder.findCommentById(commentId)
+  .then(foundComment => {
+    if(!foundComment) {
+      req.flash('error', 'Unable to find associated comment');
+      return redirect('back');
+    }
+    if (foundComment.user_id !== req.session.userId) {
+      req.flash('error', 'You cannot delete other\'s comment');
+      return redirect('back');
+    }
+    return next();
+  })
+  .catch(error => {
+    // server error
+    res.send(error.message);
+  })
+}, 
+(req, res) => {
   const commentId = req.params.commentId;
   const studentId = req.params.id;
-  commentHelper.deleteComment(commentId)
-  .then(id => {
-    if (id.length == 0) {
-      // unauthorized action
-    }
+  const userId = req.session.userId;
+  commentHelper.deleteComment(commentId, userId)
+  .then(() => {
     res.redirect(`/students/${studentId}`)
   })
   .catch(error => {
+    //server error
     res.send(error.message);
   })
 })

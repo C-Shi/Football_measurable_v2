@@ -5,6 +5,7 @@ const requestHelper = require('../lib/requestHelper');
 const commentHelper = require('../lib/commentHelper');
 const performanceHelper = require('../lib/performanceHelper');
 const validator = require('../lib/validator');
+const middleware = require('../middleware');
 
 // config image upload to cloudinary **************************
 const multer = require('multer');
@@ -53,7 +54,7 @@ router.get('/students/datatable', (req, res) => {
   .catch(error => console.log(error))
 })
 
-router.get('/students/new', (req, res) => {
+router.get('/students/new', middleware.isLogin, middleware.isCoach, (req, res) => {
   res.render('students/new');
 })
 
@@ -78,7 +79,8 @@ router.get('/students/:id', (req, res) => {
   })
 })
 
-router.post('/students', upload.single('image'), (req, res) => {
+
+router.post('/students', middleware.isLogin, middleware.isCoach, upload.single('image'), (req, res) => {
   const profileError = validator.studentValidator.profileMissing(req.body);
   if (profileError) {
     req.flash('error', profileError);
@@ -115,7 +117,7 @@ router.post('/students', upload.single('image'), (req, res) => {
   })
 })
 
-router.get('/students/:id/edit', (req, res) => {
+router.get('/students/:id/edit', middleware.isLogin, middleware.isCoach, (req, res) => {
   const studentId = req.params.id;
   studentHelper.fetchStudentById(studentId)
   .then(profile => {
@@ -124,7 +126,7 @@ router.get('/students/:id/edit', (req, res) => {
 })
 
 
-router.put('/students/:id/update', upload.single('image'), (req, res) => {
+router.put('/students/:id/update', middleware.isLogin, middleware.isCoach, upload.single('image'), (req, res) => {
   const studentId = req.params.id;
   const profile = req.body;
 
@@ -161,7 +163,7 @@ router.put('/students/:id/update', upload.single('image'), (req, res) => {
   }
 })
 
-router.delete('/students/:id', (req, res) => {
+router.delete('/students/:id', middleware.isLogin, middleware.isCoach, (req, res) => {
   const studentId = req.params.id;
   studentHelper.fetchStudentImageById(studentId)
   .then(result => {
@@ -185,7 +187,7 @@ router.delete('/students/:id', (req, res) => {
   .catch(error => res.send(error.message))
 })
 
-router.use('/students/:id/comment', commentRoute);
-router.use('/students/:id/performance', performanceRoute);
+router.use('/students/:id/comment', middleware.isLogin, middleware.isCoach, commentRoute);
+router.use('/students/:id/performance', middleware.isLogin, middleware.isCoach, performanceRoute);
 
 module.exports = router;
