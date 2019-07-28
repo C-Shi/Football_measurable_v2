@@ -4,6 +4,7 @@ const studentHelper = require('../lib/studentHelper');
 const requestHelper = require('../lib/requestHelper');
 const commentHelper = require('../lib/commentHelper');
 const performanceHelper = require('../lib/performanceHelper');
+const validator = require('../lib/validator');
 
 // config image upload to cloudinary **************************
 const multer = require('multer');
@@ -58,10 +59,7 @@ router.get('/students/new', (req, res) => {
 
 router.get('/students/:id', (req, res) => {
   const studentId = req.params.id
-  let year = Number(req.query.year);
-  if(!(year && year > 2000 && year < 2050)) {
-    year = null;
-  }
+  const year = validator.isYearSync(req.query.year) ? req.query.year : null;
   Promise.all([
     studentHelper.fetchStudentById(studentId),
     performanceHelper.fetchStudentPerformance(studentId, year),
@@ -81,6 +79,11 @@ router.get('/students/:id', (req, res) => {
 })
 
 router.post('/students', upload.single('image'), (req, res) => {
+  const profileError = validator.studentValidator.profileMissing(req.body);
+  if (profileError) {
+    req.flash('error', profileError);
+    return res.redirect('back');
+  };
   const profile = requestHelper.formatStudentInfo(req.body);
   let new_student_id;
   const image = req.file ? req.file.path : "https://res.cloudinary.com/dhi1ngld5/image/upload/v1532544942/default_avatar.png"
