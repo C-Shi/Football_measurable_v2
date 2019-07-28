@@ -2,6 +2,7 @@ const express = require('express');
 const router  = express.Router({mergeParams:true})
 const studentHelper = require('../lib/studentHelper');
 const requestHelper = require('../lib/requestHelper');
+const userHelper = require('../lib/userHelper');
 const commentHelper = require('../lib/commentHelper');
 const performanceHelper = require('../lib/performanceHelper');
 const validator = require('../lib/validator');
@@ -39,14 +40,37 @@ router.get('/students', (req, res) => {
   res.render('students/index');
 })
 
-router.get('/students/datatable', (req, res) => {
+router.get('/students/datatable', 
+// add modify and delete option if authorized user login
+(req, res, next) => {
+  if(req.session.email) {
+    userHelper.findUserByEmail(req.session.email)
+    .then(user => {
+      if (user.coach || user.developer) {
+        req.authorizedToModify = true;
+      }
+      return next();
+    })
+    .catch(error => {
+      // server error
+      res.send(error.message);
+    })
+  } else {
+    return next();
+  }
+}, 
+(req, res) => {
   studentHelper.fetchStudents()
   .then(students => {
      const data = students.map(student => {
+      let option = `<a href="/students/${student.id}" class="btn btn-primary btn-sm">Detail</a>`;
+      if (req.authorizedToModify) {
+        option += `<a href="/students/${student.id}/edit" class="btn btn-success btn-sm">Edit</a><form class="d-inline" action="/students/${student.id}?_method=DELETE" onsubmit="return confirm('Do you really want to delete ${student.first_name} ${student.last_name}? This action cannot be undo');" method="POST"><button class="btn btn-danger btn-sm">Delete</button></form>`;
+      }
       return {
         ...student,
         name: `${student.first_name} ${student.last_name}`,
-        more: `<a href="/students/${student.id}" class="btn btn-primary btn-sm">Detail</a><a href="/students/${student.id}/edit" class="btn btn-success btn-sm">Edit</a>`
+        more: option
       }
     })
     res.send({data});
