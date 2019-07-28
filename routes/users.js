@@ -96,27 +96,33 @@ router.post('/reset/:token', middleware.isNotLogin, (req, res) => {
   const token = req.params.token;
   const email = req.body.email;
   const password = req.body.password;
-  userHelper.findOneUserBy('password_reset_token', token)
-  .then(user => {
-    if (!user) {
-      res.render('users/reset', {error: 'Invalid Token'})
-    } else {
-      let expiry = user.password_reset_token_expiry;
-      let now = new Date().toISOString().slice(0, 19).replace('T', ' ');
-      if(new Date(now) > new Date(expiry)) {
-        res.render('users/reset', {error: "Token Expired. It Was Valid Within One Hour"})
+  if (!validator.userValidator.checkPasswordStrength(password)) {
+    req.flash('error', 'Your password is too weak');
+    req.flash('info', `<p>6 characters or more</p> <p>Has at least one lowercase and one uppercase alphabetical character</p> <p>Has at least one lowercase and one numeric character</p><p>Has at least one uppercase and one numeric character</p>`)
+    return res.redirect('back');
+  } else {
+    userHelper.findOneUserBy('password_reset_token', token)
+    .then(user => {
+      if (!user) {
+        res.render('users/reset', {error: 'Invalid Token'})
       } else {
-        // reset password
-        return userHelper.changePassword(email, token, password)
+        let expiry = user.password_reset_token_expiry;
+        let now = new Date().toISOString().slice(0, 19).replace('T', ' ');
+        if(new Date(now) > new Date(expiry)) {
+          res.render('users/reset', {error: "Token Expired. It Was Valid Within One Hour"})
+        } else {
+          // reset password
+          return userHelper.changePassword(email, token, password)
+        }
       }
-    }
-  })
-  .then(() => {
-    res.redirect('/login');
-  })
-  .catch(error => {
-    res.send(error);
-  })
+    })
+    .then(() => {
+      res.redirect('/login');
+    })
+    .catch(error => {
+      res.send(error);
+    })
+  }
 
 })
 
