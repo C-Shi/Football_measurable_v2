@@ -19,7 +19,7 @@ router.delete('/:commentId',
 // middleware checking if comment belongs to user
 (req, res, next) => {
   const commentId = req.params.commentId;
-  commentHelpder.findCommentById(commentId)
+  commentHelper.findCommentById(commentId)
   .then(foundComment => {
     if(!foundComment) {
       req.flash('error', 'Unable to find associated comment');
