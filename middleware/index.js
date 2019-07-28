@@ -51,6 +51,23 @@ module.exports = {
       // server error;
       res.send(error.message);
     })
+  },
+
+  isDeveloper: (req, res, next) => {
+    const email = req.session.email;
+    userHelper.findUserByEmail(email)
+    .then(user => {
+      if(user.developer) {
+        return next();
+      } else {
+        req.flash('error', 'Only Developer Has This Privilege');
+        res.redirect('back');
+      }
+    })
+    .catch(error => {
+      // serve error
+      res.send(error.message);
+    })
   }
   
 }
