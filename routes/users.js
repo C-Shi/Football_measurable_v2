@@ -4,11 +4,11 @@ const userHelper = require('../lib/userHelper');
 const validator = require('../lib/validator');
 const middleware = require('../middleware');
 
-router.get('/register', (req, res) => {
+router.get('/register', middleware.isLogin, middleware.isAdmin, (req, res) => {
   res.render('users/register');
 })
 
-router.post('/register', (req, res) => {
+router.post('/register', middleware.isLogin, middleware.isAdmin, (req, res) => {
   const user = Object.assign({}, req.body);
   user.admin = user.admin ? true : false;
   user.coach = user.coach ? true : false;
