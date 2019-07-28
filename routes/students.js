@@ -53,7 +53,7 @@ router.get('/students/datatable', (req, res) => {
   .catch(error => console.log(error))
 })
 
-router.get('/students/new', middleware.isCoach, (req, res) => {
+router.get('/students/new', middleware.isLogin, middleware.isCoach, (req, res) => {
   res.render('students/new');
 })
 
@@ -81,7 +81,7 @@ router.get('/students/:id', (req, res) => {
   })
 })
 
-router.post('/students', middleware.isCoach, upload.single('image'), (req, res) => {
+router.post('/students', middleware.isLogin, middleware.isCoach, upload.single('image'), (req, res) => {
   const profile = requestHelper.formatStudentInfo(req.body);
   let new_student_id;
   const image = req.file ? req.file.path : "https://res.cloudinary.com/dhi1ngld5/image/upload/v1532544942/default_avatar.png"
@@ -113,7 +113,7 @@ router.post('/students', middleware.isCoach, upload.single('image'), (req, res) 
   })
 })
 
-router.get('/students/:id/edit', middleware.isCoach, (req, res) => {
+router.get('/students/:id/edit', middleware.isLogin, middleware.isCoach, (req, res) => {
   const studentId = req.params.id;
   studentHelper.fetchStudentById(studentId)
   .then(profile => {
@@ -122,7 +122,7 @@ router.get('/students/:id/edit', middleware.isCoach, (req, res) => {
 })
 
 
-router.put('/students/:id/update', middleware.isCoach, upload.single('image'), (req, res) => {
+router.put('/students/:id/update', middleware.isLogin, middleware.isCoach, upload.single('image'), (req, res) => {
   const studentId = req.params.id;
   const profile = req.body;
 
@@ -159,7 +159,7 @@ router.put('/students/:id/update', middleware.isCoach, upload.single('image'), (
   }
 })
 
-router.delete('/students/:id', middleware.isCoach, (req, res) => {
+router.delete('/students/:id', middleware.isLogin, middleware.isCoach, (req, res) => {
   const studentId = req.params.id;
   studentHelper.fetchStudentImageById(studentId)
   .then(result => {
@@ -183,7 +183,7 @@ router.delete('/students/:id', middleware.isCoach, (req, res) => {
   .catch(error => res.send(error.message))
 })
 
-router.use('/students/:id/comment', commentRoute);
-router.use('/students/:id/performance', performanceRoute);
+router.use('/students/:id/comment', middleware.isLogin, middleware.isCoach, commentRoute);
+router.use('/students/:id/performance', middleware.isLogin, middleware.isCoach, performanceRoute);
 
 module.exports = router;
