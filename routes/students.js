@@ -59,6 +59,10 @@ router.get('/students/new', middleware.isLogin, middleware.isCoach, (req, res) =
 })
 
 router.get('/students/:id', (req, res) => {
+  if (!Number(req.params.id)) {
+    req.flash('error', 'Opp. Student ID should be Integer only');
+    return res.redirect('/students');
+  }
   const studentId = req.params.id
   const year = validator.isYearSync(req.query.year) ? req.query.year : null;
   Promise.all([
