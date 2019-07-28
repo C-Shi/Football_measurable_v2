@@ -12,6 +12,8 @@ const flash = require('connect-flash');
 const bcrypt = require('bcrypt');
 
 // app configuration
+const path = require('path');
+global.appRoot = path.resolve(__dirname);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use(express.static("public"))
