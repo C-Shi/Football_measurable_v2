@@ -7,7 +7,8 @@ const commentHelper = require('../lib/commentHelper');
 router.post('/', (req, res) => {
   const studentId = req.params.id;
   const content = req.body.comment;
-  commentHelper.createComment(studentId, content)
+  const userId = req.session.userId
+  commentHelper.createComment(studentId, content, userId)
   .then(() => res.redirect(`/students/${studentId}`))
   .catch(error => {
     res.send(error.message)
