@@ -4,6 +4,7 @@ const studentHelper = require('../lib/studentHelper');
 const requestHelper = require('../lib/requestHelper');
 const commentHelper = require('../lib/commentHelper');
 const performanceHelper = require('../lib/performanceHelper');
+const middleware = require('../middleware');
 
 // config image upload to cloudinary **************************
 const multer = require('multer');

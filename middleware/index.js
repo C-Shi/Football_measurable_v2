@@ -20,12 +20,13 @@ module.exports = {
   },
 
   isCoach: (req, res, next) => {
+    const email = req.session.email;
     userHelper.findUserByEmail(email)
     .then(user => {
       if(user.coach) {
-        next()
+        return next()
       } else {
-        req.flash('error', 'You are Unauthorized to Perform this action');
+        req.flash('error', 'You are unauthorized to perform this action');
         res.redirect('back');
       }
     })
@@ -35,6 +36,21 @@ module.exports = {
     })
   }, 
 
-  
+  isAdmin: (req, res, next) => {
+    const email = req.session.email;
+    userHelper.findUserByEmail(email)
+    .then(user => {
+      if(user.admin) {
+        return next();
+      } else {
+        req.flash('error', 'You are unauthorized to perform this action');
+        res.redirect('back');
+      }
+    })
+    .catch(error => {
+      // server error;
+      res.send(error.message);
+    })
+  }
   
 }
