@@ -13,6 +13,7 @@
           <p class="card-text"><strong>Grade: </strong><%= profile.grade %></p>
           <p class="card-text"><strong>Height: </strong><%= profile.height %></p>
           <p class="card-text"><strong>Weight: </strong><%= profile.weight %> lb</p>
+          <p class="card-text"><strong>Arm Span: </strong><%= profile.arm_span || 'N/A'%></p>
           <p class="card-text"><strong>Position: </strong><%= profile.position || 'N/A' %></p>
           <% if (user && user.coach) { %>
             <a href="/students/<%= profile.id %>/edit" class="btn btn-success btn-sm">Edit Profile</a>
