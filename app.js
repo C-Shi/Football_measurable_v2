@@ -40,7 +40,7 @@ app.use((req, res, next) => {
 // requrie routes
 const studentsRoute = require('./routes/students');
 const usersRoute = require('./routes/users');
-app.get('/', (req, res) => {
+app.get('/', (req, res, next) => {
   res.render('index');
 })
 app.use('/', studentsRoute);
@@ -62,6 +62,6 @@ app.use((err, req, res, next) => {
   }
 })
 
-app.listen(PORT, (req, res) => {
+app.listen(PORT, (req, res, next) => {
   console.log(`Server Start at ${PORT}`);
 })

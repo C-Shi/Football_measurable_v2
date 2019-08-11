@@ -36,7 +36,7 @@ cloudinary.config({
 const commentRoute = require('./comments');
 const performanceRoute = require('./performance');
 
-router.get('/students', (req, res) => {
+router.get('/students', (req, res, next) => {
   res.render('students/index');
 })
 
@@ -53,13 +53,13 @@ router.get('/students/datatable',
     })
     .catch(error => {
       // server error
-      res.send(error.message);
+      return next(error);;
     })
   } else {
     return next();
   }
 }, 
-(req, res) => {
+(req, res, next) => {
   studentHelper.fetchStudents()
   .then(students => {
      const data = students.map(student => {
@@ -75,16 +75,16 @@ router.get('/students/datatable',
     })
     res.send({data});
   })
-  .catch(error => console.log(error))
+  .catch(error => next(error))
 })
 
-router.get('/students/new', middleware.isLogin, middleware.isCoach, (req, res) => {
+router.get('/students/new', middleware.isLogin, middleware.isCoach, (req, res, next) => {
   res.render('students/new');
 })
 
-router.get('/students/:id', (req, res) => {
+router.get('/students/:id', (req, res, next) => {
   if (!Number(req.params.id)) {
-    req.flash('error', 'Opp. Student ID should be Integer only');
+    req.flash('error', 'Opp!. Invalid Student ID');
     return res.redirect('/students');
   }
   const studentId = req.params.id
@@ -103,12 +103,12 @@ router.get('/students/:id', (req, res) => {
     res.render("students/show", { profile, performance, comments})
   })
   .catch(error => {
-    res.send(error.message)
+    return next(error);
   })
 })
 
 
-router.post('/students', middleware.isLogin, middleware.isCoach, upload.single('image'), (req, res) => {
+router.post('/students', middleware.isLogin, middleware.isCoach, upload.single('image'), (req, res, next) => {
   const profileError = validator.studentValidator.profileMissing(req.body);
   if (profileError) {
     req.flash('error', profileError);
@@ -141,20 +141,21 @@ router.post('/students', middleware.isLogin, middleware.isCoach, upload.single('
     res.redirect(`/students/${new_student_id}`)
   })
   .catch(error => {
-    res.send(error.message)
+    return next(error);
   })
 })
 
-router.get('/students/:id/edit', middleware.isLogin, middleware.isCoach, (req, res) => {
+router.get('/students/:id/edit', middleware.isLogin, middleware.isCoach, (req, res, next) => {
   const studentId = req.params.id;
   studentHelper.fetchStudentById(studentId)
   .then(profile => {
     res.render('students/edit', { profile })
   })
+  .catch(error => next(error));
 })
 
 
-router.put('/students/:id/update', middleware.isLogin, middleware.isCoach, upload.single('image'), (req, res) => {
+router.put('/students/:id/update', middleware.isLogin, middleware.isCoach, upload.single('image'), (req, res, next) => {
   const studentId = req.params.id;
   const profile = req.body;
 
@@ -178,7 +179,7 @@ router.put('/students/:id/update', middleware.isLogin, middleware.isCoach, uploa
       res.redirect(`/students/${studentId}`);
     })
     .catch(error => {
-      res.send(error.message);
+      return next(error);;
     })
   } else {
     studentHelper.updateStudentById(studentId, profile)
@@ -186,16 +187,15 @@ router.put('/students/:id/update', middleware.isLogin, middleware.isCoach, uploa
       res.redirect(`/students/${studentId}`);
     })
     .catch(error => {
-      res.send(error.message);
+      return next(error);;
     })
   }
 })
 
-router.delete('/students/:id', middleware.isLogin, middleware.isCoach, (req, res) => {
+router.delete('/students/:id', middleware.isLogin, middleware.isCoach, (req, res, next) => {
   const studentId = req.params.id;
   studentHelper.fetchStudentImageById(studentId)
   .then(result => {
-    console.log(result)
     if (!result) {
       throw new Error('Invalid Student Id')
     }
@@ -212,7 +212,7 @@ router.delete('/students/:id', middleware.isLogin, middleware.isCoach, (req, res
       res.redirect('back');
     }
   })
-  .catch(error => res.send(error.message))
+  .catch(error => next(error))
 })
 
 router.use('/students/:id/comment', middleware.isLogin, middleware.isCoach, commentRoute);
