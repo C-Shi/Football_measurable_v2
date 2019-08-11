@@ -46,6 +46,16 @@ app.get('/', (req, res) => {
 app.use('/', studentsRoute);
 app.use('/', usersRoute);
 
+// custome 500 error handler
+app.use((err, req, res, next) => {
+  if (err) {
+    console.error(err.stack)
+    const error = err.message;
+    res.status(500);
+    res.render('500', { error })
+  }
+})
+
 app.listen(PORT, (req, res) => {
   console.log(`Server Start at ${PORT}`);
 })
