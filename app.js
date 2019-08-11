@@ -46,7 +46,13 @@ app.get('/', (req, res) => {
 app.use('/', studentsRoute);
 app.use('/', usersRoute);
 
-// custome 500 error handler
+// custom 404 error handler
+app.use((req, res, next) => {
+  res.status(404);
+  res.render('404', { error: 'We don\'t know this path' });
+})
+
+// custom 500 error handler
 app.use((err, req, res, next) => {
   console.log('Server Throw a 500 Error');
   if (err) {
