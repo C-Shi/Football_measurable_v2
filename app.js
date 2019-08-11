@@ -48,8 +48,9 @@ app.use('/', usersRoute);
 
 // custome 500 error handler
 app.use((err, req, res, next) => {
+  console.log('Server Throw a 500 Error');
   if (err) {
-    console.error(err.stack)
+    console.error(err.message)
     const error = err.message;
     res.status(500);
     res.render('500', { error })
