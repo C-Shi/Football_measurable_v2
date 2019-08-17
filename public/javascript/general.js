@@ -4,4 +4,9 @@ $(document).ready(function(){
     e.preventDefault()
     $('#logout-form').submit()
   })
+
+  // initialize tooltip
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  })
 })
