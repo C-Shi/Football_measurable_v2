@@ -137,7 +137,33 @@ router.get('/users', middleware.isLogin, (req, res, next) => {
   .catch(error => next(error))
 })
 
-router.put('/users/:id/update', middleware.isLogin, (req, res, next) => {
+// this update user role request is ajax
+router.put('/users/:id/role/update', middleware.isLogin, 
+// middleware checking if current user is authorized
+(req, res, next) => {
+  // only admin and developer can update role, and cannot update themselves
+  if ((req.session.admin || req.session.developer) && req.session.userId !== req.params.id) {
+    return next();
+  } else {
+    res.status(403);
+    return res.json({status: 'error'});
+  }
+},
+(req, res, next) => {
+  userHelper.findOneUserBy('id', req.params.id)
+  .then(user => {
+    if(!user) {
+      res.status(400);
+      return res.json({status: 'error'});
+    } else if(user.developer) {
+      res.status(403);
+      return res.json({status: 'error'});
+    } else {
+      next();
+    }
+  })
+}, 
+(req, res, next) => {
   const userId = req.params.id;
   const data = Object.assign({}, userHelper.roleSanitizer(req.body));
   userHelper.updateUserRole(userId, data)

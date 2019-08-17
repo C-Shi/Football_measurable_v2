@@ -12,19 +12,25 @@
         </tr>
       </thead>
       <tbody>
-        <% users.forEach(function(user){ %>
+        <% users.forEach(function(account){ %>
           <tr>
-            <td><%= user.name %></td>
+            <td><%= account.name %></td>
             <td>
               <div class="custom-control custom-switch">
-                <input type="checkbox" class="custom-control-input" data-user-id="<%= user.id %>" name="coach" id="coach-<%= user.id %>" <%= user.coach ? 'checked' : '' %>>
-                <label class="custom-control-label" for="coach-<%= user.id %>"> &nbsp;</label>
+                <input type="checkbox" class="custom-control-input" 
+                       data-user-id="<%= account.id %>" name="coach" id="coach-<%= account.id %>" 
+                       <%= (account.developer || user.id == account.id) ?  "disabled" : "" %>
+                       <%= account.coach ? 'checked' : '' %>>
+                <label class="custom-control-label" for="coach-<%= account.id %>"> &nbsp;</label>
               </div>
             </td>
             <td>
               <div class="custom-control custom-switch d-inline">
-                <input type="checkbox" class="custom-control-input" data-user-id="<%= user.id %>" name="admin" id="admin-<%= user.id %>" <%= user.admin ? 'checked' : '' %>>
-                <label class="custom-control-label" for="admin-<%= user.id %>"> &nbsp;</label>
+                <input type="checkbox" class="custom-control-input" 
+                       data-user-id="<%= account.id %>" name="admin" id="admin-<%= account.id %>" 
+                       <%= (account.developer || user.id == account.id) ?  "disabled" : "" %>
+                       <%= account.admin ? 'checked' : '' %>>
+                <label class="custom-control-label" for="admin-<%= account.id %>"> &nbsp;</label>
               </div>
             </td>
             <td>
@@ -45,7 +51,7 @@
     var isChecked = input.prop('checked')
     data[input.attr('name')] = isChecked;
     $.post({
-      url: "/users/" + input.attr('data-user-id') + "/update?_method=PUT",
+      url: "/users/" + input.attr('data-user-id') + "/role/update?_method=PUT",
       data: data
     })
     .done(function(response) {
@@ -71,6 +77,16 @@
         alert.remove();
       }, 2000)
     })
+  })
+
+  $('.custom-switch').off('click').on('click', function(evt) {
+    if($(this).children('input').prop('disabled')) {
+      var alert = $('<div>').addClass('alert alert-info').attr('role', 'alert').html("<strong>Warning: </strong> Cannot change developer's role, or yourself");
+      $('.container.flash').append(alert);
+      setTimeout(() => {
+        alert.remove();
+      }, 2000);
+    }
   })
 </script>
 
