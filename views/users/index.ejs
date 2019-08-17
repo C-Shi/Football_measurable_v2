@@ -34,8 +34,16 @@
               </div>
             </td>
             <td>
-              <button>Delete</button>
-              <button>Email</button>
+                <span data-toggle="tooltip" data-placement="top" title="Email User">
+                  <a href="javascript://" ><i class="far fa-envelope"></i></a>
+                </span>
+              <% if (!account.developer && account.id !== user.id) { %>
+                <span data-toggle="tooltip" data-placement="top" title="Delete User">
+                  <a href="javascript://" >
+                    <i class="fas fa-user-slash" data-toggle="modal" data-target="#deleteUserModal" data-user-id="<%= account.id %>" data-user-name="<%= account.name %>"></i>
+                  </a>
+                </span>
+              <% } %>
             </td>
           </tr>
         <% }) %>
@@ -44,50 +52,6 @@
   </div>
 </div>
 
-<script>
-  $('input').on('change', function(evt) {
-    var input = $(this);
-    var data = {};
-    var isChecked = input.prop('checked')
-    data[input.attr('name')] = isChecked;
-    $.post({
-      url: "/users/" + input.attr('data-user-id') + "/role/update?_method=PUT",
-      data: data
-    })
-    .done(function(response) {
-      console.log(response);
-    })
-    .fail(function(response, text, xhr) {
-      var alert = $('<div>').addClass('alert alert-danger').attr('role', 'alert');
-      switch (response.status) {
-        case 403: 
-          alert.html('<strong>Unauthorized: </strong> You Cannot Perform This Action With Your Current Role');
-          break;
-        case 400:
-          alert.html('<strong>Bad Request: </strong> Server Cannot Parse Your Request');
-          break;
-        default: 
-          alert.html('<strong>Internal Server Error: </strong>Unable to Update User Role');
-      }
-      setTimeout(function(){
-        input.prop('checked', !input.prop('checked'));
-        $('.container.flash').append(alert);
-      }, 200);
-      setTimeout(function(){
-        alert.remove();
-      }, 2000)
-    })
-  })
-
-  $('.custom-switch').off('click').on('click', function(evt) {
-    if($(this).children('input').prop('disabled')) {
-      var alert = $('<div>').addClass('alert alert-info').attr('role', 'alert').html("<strong>Warning: </strong> Cannot change developer's role, or yourself");
-      $('.container.flash').append(alert);
-      setTimeout(() => {
-        alert.remove();
-      }, 2000);
-    }
-  })
-</script>
-
+<% include ../partials/modal/deleteUser %>
+<script src="/javascript/users/edit.js"></script>
 <% include ../partials/footer %>

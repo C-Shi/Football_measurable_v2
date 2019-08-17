@@ -140,7 +140,7 @@ router.get('/users', middleware.isLogin, (req, res, next) => {
 // this update user role request is ajax
 router.put('/users/:id/role/update', middleware.isLogin, 
 // middleware checking if current user is authorized
-(req, res, next) => {
+  (req, res, next) => {
   // only admin and developer can update role, and cannot update themselves
   if ((req.session.admin || req.session.developer) && req.session.userId !== req.params.id) {
     return next();
@@ -148,8 +148,8 @@ router.put('/users/:id/role/update', middleware.isLogin,
     res.status(403);
     return res.json({status: 'error'});
   }
-},
-(req, res, next) => {
+  },
+  (req, res, next) => {
   userHelper.findOneUserBy('id', req.params.id)
   .then(user => {
     if(!user) {
@@ -162,35 +162,68 @@ router.put('/users/:id/role/update', middleware.isLogin,
       next();
     }
   })
-}, 
-(req, res, next) => {
-  const userId = req.params.id;
-  const data = Object.assign({}, userHelper.roleSanitizer(req.body));
-  userHelper.updateUserRole(userId, data)
-  .then(response => {
-    // If no invalid id
-    if(!response) {
-      const error = new Error();
-      error.code = 'ER_INVALID_ID';
-      throw error;
-    }
-    for(key in data) {
-      // if column does not update
-      if(data[key] !== response[key]) {
-        throw new Error('Updated Failed');
+  }, 
+  (req, res, next) => {
+    const userId = req.params.id;
+    const data = Object.assign({}, userHelper.roleSanitizer(req.body));
+    userHelper.updateUserRole(userId, data)
+    .then(response => {
+      // If no invalid id
+      if(!response) {
+        const error = new Error();
+        error.code = 'ER_INVALID_ID';
+        throw error;
       }
-    }
-    res.json({status: 'success'});
-  })
-  .catch(error => {
-    console.error(error);
-    if(error.code == 'ER_BAD_FIELD_ERROR' || error.code == 'ER_INVALID_ID' || error.code == 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
-      res.status(400)
+      for(key in data) {
+        // if column does not update
+        if(data[key] !== response[key]) {
+          throw new Error('Updated Failed');
+        }
+      }
+      res.json({status: 'success'});
+    })
+    .catch(error => {
+      console.error(error);
+      if(error.code == 'ER_BAD_FIELD_ERROR' || error.code == 'ER_INVALID_ID' || error.code == 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+        res.status(400)
+      } else {
+        res.status(500);
+      }
+      res.json(error);
+    })
+  }
+);
+
+router.delete('/users/:id/delete', middleware.isLogin, middleware.isAdmin, (req, res, next) => {
+  if(req.params.id === req.session.userId) {
+    req.flash('error', 'You Cannot Delete Yourself');
+    res.redirect('back');
+  } else {
+    userHelper.findOneUserBy('id', req.params.id)
+    .then(user => {
+      if (user.developer) {
+        req.flash('error', 'You cannot remove this user');
+        res.redirect('back');
+      } else {
+        return next();
+      }
+    })
+    .catch(error => next(error))
+  }
+}, (req, res, next) => {
+  const user = { id: req.params.id, name: req.body.name }
+  userHelper.removeUser(user.id, user.name)
+  .then(foundUser => {
+    console.log(foundUser);
+    // if user delete, should found nothing
+    if (foundUser) {
+      req.flash('error', 'User Is Not Removed');
     } else {
-      res.status(500);
+      req.flash('success', `User ${user.name} Has Been Removed`);
     }
-    res.json(error);
+    res.redirect('back');
   })
+  .catch(error => next(error));
 })
 
 module.exports = router;
