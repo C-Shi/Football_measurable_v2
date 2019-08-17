@@ -1,0 +1,25 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/500.css">
+  </head>
+  <body>
+    <div class="header">
+      <div class="error-code">500</div>
+      <div class="error-message">
+        <h2>Oops! Server Error!</h2>
+        <div>Our Server Said: "<%= error %>"</div>
+        <a href="/">Go Back To Home Page</a>
+      </div>
+    </div>
+    <div class="picture">
+      <img src="/image/500.jpg" width="100%">
+    </div>
+    <script>
+      setTimeout(function() {
+        window.location.href = "/";
+      }, 5000)
+    </script>
+  </body>
+</html>
