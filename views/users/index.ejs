@@ -1,0 +1,57 @@
+<% include ../partials/header %>
+
+<div class="users container">
+  <div class="row">
+    <table class="table table-strip">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Coach</th>
+          <th>Administrator</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% users.forEach(function(account){ %>
+          <tr>
+            <td><%= account.name %></td>
+            <td>
+              <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" 
+                       data-user-id="<%= account.id %>" name="coach" id="coach-<%= account.id %>" 
+                       <%= (account.developer || user.id == account.id) ?  "disabled" : "" %>
+                       <%= account.coach ? 'checked' : '' %>>
+                <label class="custom-control-label" for="coach-<%= account.id %>"> &nbsp;</label>
+              </div>
+            </td>
+            <td>
+              <div class="custom-control custom-switch d-inline">
+                <input type="checkbox" class="custom-control-input" 
+                       data-user-id="<%= account.id %>" name="admin" id="admin-<%= account.id %>" 
+                       <%= (account.developer || user.id == account.id) ?  "disabled" : "" %>
+                       <%= account.admin ? 'checked' : '' %>>
+                <label class="custom-control-label" for="admin-<%= account.id %>"> &nbsp;</label>
+              </div>
+            </td>
+            <td>
+                <span data-toggle="tooltip" data-placement="top" title="Email User">
+                  <a href="javascript://" ><i class="far fa-envelope"></i></a>
+                </span>
+              <% if (!account.developer && account.id !== user.id) { %>
+                <span data-toggle="tooltip" data-placement="top" title="Delete User">
+                  <a href="javascript://" >
+                    <i class="fas fa-user-slash" data-toggle="modal" data-target="#deleteUserModal" data-user-id="<%= account.id %>" data-user-name="<%= account.name %>"></i>
+                  </a>
+                </span>
+              <% } %>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<% include ../partials/modal/deleteUser %>
+<script src="/javascript/users/edit.js"></script>
+<% include ../partials/footer %>
