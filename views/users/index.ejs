@@ -1,0 +1,41 @@
+<% include ../partials/header %>
+
+<div class="users container">
+  <div class="row">
+    <table class="table table-strip">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Coach</th>
+          <th>Administrator</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% users.forEach(function(user){ %>
+          <tr>
+            <td><%= user.name %></td>
+            <td>
+              <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="coach-<%= user.id %>" <%= user.coach ? 'checked' : '' %>>
+                <label class="custom-control-label" for="coach-<%= user.id %>"> &nbsp;</label>
+              </div>
+            </td>
+            <td>
+              <div class="custom-control custom-switch d-inline">
+                <input type="checkbox" class="custom-control-input" id="admin-<%= user.id %>" <%= user.admin ? 'checked' : '' %>>
+                <label class="custom-control-label" for="admin-<%= user.id %>"> &nbsp;</label>
+              </div>
+            </td>
+            <td>
+              <button>Delete</button>
+              <button>Email</button>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<% include ../partials/footer %>
