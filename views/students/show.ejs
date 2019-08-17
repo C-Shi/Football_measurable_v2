@@ -84,13 +84,10 @@
             <h4 class="mr-3">Data of <%= performance.year %></h4>
             <% } %>
             <div class="dropdown">
-              <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="year-option" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Year Option
               </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="/students/<%= profile.id %>?year=2019">2019</a>
-                <a class="dropdown-item" href="/students/<%= profile.id %>?year=2018">2018</a>
-                <a class="dropdown-item" href="/students/<%= profile.id %>?year=2017">2017</a>
+              <div class="dropdown-menu" aria-labelledby="year-option" id="year-option-dropdown" data-student-id="<%= profile.id %>">
               </div>
             </div>
           </div>
