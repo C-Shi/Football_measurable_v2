@@ -137,4 +137,23 @@ router.get('/users', middleware.isLogin, (req, res, next) => {
   .catch(error => next(error))
 })
 
+router.put('/users/:id/update', middleware.isLogin, (req, res, next) => {
+  const userId = req.params.id;
+  const data = Object.assign({}, userHelper.roleSanitizer(req.body));
+  userHelper.updateUserRole(userId, data)
+  .then(response => {
+    for(key in data) {
+      if(data[key] !== response[key]) {
+        throw new Error('Updated Failed');
+      }
+    }
+    res.json({status: 'success'});
+  })
+  .catch(error => {
+    console.error(error);
+    res.status(400);
+    res.json(error);
+  })
+})
+
 module.exports = router;

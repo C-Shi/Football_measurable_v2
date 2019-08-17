@@ -17,13 +17,13 @@
             <td><%= user.name %></td>
             <td>
               <div class="custom-control custom-switch">
-                <input type="checkbox" class="custom-control-input" id="coach-<%= user.id %>" <%= user.coach ? 'checked' : '' %>>
+                <input type="checkbox" class="custom-control-input" data-user-id="<%= user.id %>" name="coach" id="coach-<%= user.id %>" <%= user.coach ? 'checked' : '' %>>
                 <label class="custom-control-label" for="coach-<%= user.id %>"> &nbsp;</label>
               </div>
             </td>
             <td>
               <div class="custom-control custom-switch d-inline">
-                <input type="checkbox" class="custom-control-input" id="admin-<%= user.id %>" <%= user.admin ? 'checked' : '' %>>
+                <input type="checkbox" class="custom-control-input" data-user-id="<%= user.id %>" name="admin" id="admin-<%= user.id %>" <%= user.admin ? 'checked' : '' %>>
                 <label class="custom-control-label" for="admin-<%= user.id %>"> &nbsp;</label>
               </div>
             </td>
@@ -37,5 +37,23 @@
     </table>
   </div>
 </div>
+
+<script>
+  $('input').on('change', function(evt) {
+    var userId = $(this).attr('data-user-id');
+    var data = {};
+    data[$(this).attr('name')] = $(this).prop('checked');
+    $.post({
+      url: "/users/" + userId + "/update?_method=PUT",
+      data: data
+    })
+    .done(function(response) {
+      console.log(response);
+    })
+    .fail(function(response, text, xhr) {
+      console.log(text)
+    })
+  })
+</script>
 
 <% include ../partials/footer %>
