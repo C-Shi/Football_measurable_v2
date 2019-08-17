@@ -40,18 +40,36 @@
 
 <script>
   $('input').on('change', function(evt) {
-    var userId = $(this).attr('data-user-id');
+    var input = $(this);
     var data = {};
-    data[$(this).attr('name')] = $(this).prop('checked');
+    var isChecked = input.prop('checked')
+    data[input.attr('name')] = isChecked;
     $.post({
-      url: "/users/" + userId + "/update?_method=PUT",
+      url: "/users/" + input.attr('data-user-id') + "/update?_method=PUT",
       data: data
     })
     .done(function(response) {
       console.log(response);
     })
     .fail(function(response, text, xhr) {
-      console.log(text)
+      var alert = $('<div>').addClass('alert alert-danger').attr('role', 'alert');
+      switch (response.status) {
+        case 403: 
+          alert.html('<strong>Unauthorized: </strong> You Cannot Perform This Action With Your Current Role');
+          break;
+        case 400:
+          alert.html('<strong>Bad Request: </strong> Server Cannot Parse Your Request');
+          break;
+        default: 
+          alert.html('<strong>Internal Server Error: </strong>Unable to Update User Role');
+      }
+      setTimeout(function(){
+        input.prop('checked', !input.prop('checked'));
+        $('.container.flash').append(alert);
+      }, 200);
+      setTimeout(function(){
+        alert.remove();
+      }, 2000)
     })
   })
 </script>

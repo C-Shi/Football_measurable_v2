@@ -142,7 +142,14 @@ router.put('/users/:id/update', middleware.isLogin, (req, res, next) => {
   const data = Object.assign({}, userHelper.roleSanitizer(req.body));
   userHelper.updateUserRole(userId, data)
   .then(response => {
+    // If no invalid id
+    if(!response) {
+      const error = new Error();
+      error.code = 'ER_INVALID_ID';
+      throw error;
+    }
     for(key in data) {
+      // if column does not update
       if(data[key] !== response[key]) {
         throw new Error('Updated Failed');
       }
@@ -151,7 +158,11 @@ router.put('/users/:id/update', middleware.isLogin, (req, res, next) => {
   })
   .catch(error => {
     console.error(error);
-    res.status(400);
+    if(error.code == 'ER_BAD_FIELD_ERROR' || error.code == 'ER_INVALID_ID' || error.code == 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD') {
+      res.status(400)
+    } else {
+      res.status(500);
+    }
     res.json(error);
   })
 })
