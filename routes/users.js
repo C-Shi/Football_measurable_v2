@@ -129,4 +129,12 @@ router.post('/reset/:token', middleware.isNotLogin, (req, res) => {
 
 })
 
+router.get('/users', middleware.isLogin, (req, res, next) => {
+  userHelper.fetchAllUsers()
+  .then(users => {
+    res.render('users/index', { users });
+  })
+  .catch(error => next(error))
+})
+
 module.exports = router;
