@@ -40,7 +40,7 @@ app.use((req, res, next) => {
 // requrie routes
 const studentsRoute = require('./routes/students');
 const usersRoute = require('./routes/users');
-app.get('/', (req, res) => {
+app.get('/', (req, res, next) => {
   res.render('index');
 })
 app.use('/', studentsRoute);
@@ -49,7 +49,7 @@ app.use('/', usersRoute);
 // custom 404 error handler
 app.use((req, res, next) => {
   res.status(404);
-  res.render('404', { error: 'We don\'t know this path' });
+  res.render('error', { code: 404, message: "We don't know this path" });
 })
 
 // custom 500 error handler
@@ -57,12 +57,11 @@ app.use((err, req, res, next) => {
   console.log('Server Throw a 500 Error');
   if (err) {
     console.error(err.message)
-    const error = err.message;
     res.status(500);
-    res.render('500', { error })
+    res.render('error', { code: 500, message: err.message })
   }
 })
 
-app.listen(PORT, (req, res) => {
+app.listen(PORT, (req, res, next) => {
   console.log(`Server Start at ${PORT}`);
 })

@@ -7,7 +7,7 @@ const validator = require('../lib/validator');
 const middleware = require('../middleware');
 
 // add a performance record
-router.post('/', middleware.isCoach, (req, res) => {
+router.post('/', middleware.isCoach, (req, res, next) => {
   const studentId = req.params.id;
   const rawPerformance = req.body;
   const performance = requestHelper.formatPerformance(studentId, rawPerformance);
@@ -23,12 +23,12 @@ router.post('/', middleware.isCoach, (req, res) => {
     res.redirect(`/students/${studentId}?year=${performance.year}`)
   })
   .catch(error => {
-    res.send(error.message);
+    return next(error);;
   })
 })
 
 // update a performance record
-router.put('/', middleware.isCoach, (req, res) => {
+router.put('/', middleware.isCoach, (req, res, next) => {
   const studentId = req.params.id;
   const rawPerformance = req.body;
   const performance = requestHelper.formatPerformance(studentId, rawPerformance);
@@ -44,7 +44,7 @@ router.put('/', middleware.isCoach, (req, res) => {
     res.redirect(`/students/${studentId}?year=${performance.year}`)
   })
   .catch(error => {
-    res.send(error.message);
+    return next(error);;
   })
 })
 

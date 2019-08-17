@@ -32,7 +32,7 @@ module.exports = {
     })
     .catch(error => {
       // server error
-      res.send(error.message);
+      return next(error);;
     })
   }, 
 
@@ -49,7 +49,7 @@ module.exports = {
     })
     .catch(error => {
       // server error;
-      res.send(error.message);
+      return next(error);;
     })
   },
 
@@ -66,7 +66,7 @@ module.exports = {
     })
     .catch(error => {
       // serve error
-      res.send(error.message);
+      return next(error);;
     })
   }
   

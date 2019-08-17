@@ -4,11 +4,11 @@ const userHelper = require('../lib/userHelper');
 const validator = require('../lib/validator');
 const middleware = require('../middleware');
 
-router.get('/register', middleware.isLogin, middleware.isAdmin, (req, res) => {
+router.get('/register', middleware.isLogin, middleware.isAdmin, (req, res, next) => {
   res.render('users/register');
 })
 
-router.post('/register', middleware.isLogin, middleware.isAdmin, (req, res) => {
+router.post('/register', middleware.isLogin, middleware.isAdmin, (req, res, next) => {
   const user = Object.assign({}, req.body);
   user.admin = user.admin ? true : false;
   user.coach = user.coach ? true : false;
@@ -20,22 +20,22 @@ router.post('/register', middleware.isLogin, middleware.isAdmin, (req, res) => {
       if(isUnique) {
         return userHelper.register(user)
       } else {
-        throw new Error('duplicate Email')
+        throw new Error(`${user.email} appears to be an existing account`)
       }
     })
     .then(newUser => {
       res.redirect('/students');
     })
     .catch(error => {
-      res.send(error.message)
+      return next(error);
     })
 })
 
-router.get('/login', middleware.isNotLogin, (req, res) => {
+router.get('/login', middleware.isNotLogin, (req, res, next) => {
   res.render('users/login');
 })
 
-router.post('/login', middleware.isNotLogin, (req, res) => {
+router.post('/login', middleware.isNotLogin, (req, res, next) => {
   const email = req.body.email.toLowerCase();
   const password = req.body.password;
   userHelper.authenticate(email, password)
@@ -53,16 +53,16 @@ router.post('/login', middleware.isNotLogin, (req, res) => {
     }
   })
   .catch(error => {
-    res.send(error.message)
+    return next(error);
   })
 })
 
-router.post('/logout', middleware.isLogin, (req, res) => {
+router.post('/logout', middleware.isLogin, (req, res, next) => {
   req.session = null;
   res.redirect('/login');
 })
 
-router.post('/forget', middleware.isNotLogin, (req, res) => {
+router.post('/forget', middleware.isNotLogin, (req, res, next) => {
   const email = req.body.email;
   userHelper.findUserByEmail(email)
   .then(user => {
@@ -77,7 +77,7 @@ router.post('/forget', middleware.isNotLogin, (req, res) => {
   })
 })
 
-router.get('/reset/:token', middleware.isNotLogin, (req, res) => {
+router.get('/reset/:token', middleware.isNotLogin, (req, res, next) => {
   const token = req.params.token
   userHelper.findOneUserBy('password_reset_token', token)
   .then(user => {
@@ -95,7 +95,7 @@ router.get('/reset/:token', middleware.isNotLogin, (req, res) => {
   })
 })
 
-router.post('/reset/:token', middleware.isNotLogin, (req, res) => {
+router.post('/reset/:token', middleware.isNotLogin, (req, res, next) => {
   const token = req.params.token;
   const email = req.body.email;
   const password = req.body.password;

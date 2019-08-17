@@ -4,14 +4,14 @@ const studentHelper = require('../lib/studentHelper');
 const requestHelper = require('../lib/requestHelper');
 const commentHelper = require('../lib/commentHelper');
 
-router.post('/', (req, res) => {
+router.post('/', (req, res, next) => {
   const studentId = req.params.id;
   const content = req.body.comment;
   const userId = req.session.userId
   commentHelper.createComment(studentId, content, userId)
   .then(() => res.redirect(`/students/${studentId}`))
   .catch(error => {
-    res.send(error.message)
+    return next(error);
   })
 })
 
@@ -33,10 +33,10 @@ router.delete('/:commentId',
   })
   .catch(error => {
     // server error
-    res.send(error.message);
+    return next(error);;
   })
 }, 
-(req, res) => {
+(req, res, next) => {
   const commentId = req.params.commentId;
   const studentId = req.params.id;
   const userId = req.session.userId;
@@ -46,7 +46,7 @@ router.delete('/:commentId',
   })
   .catch(error => {
     //server error
-    res.send(error.message);
+    return next(error);;
   })
 })
 
